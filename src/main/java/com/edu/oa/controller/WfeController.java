@@ -138,8 +138,13 @@ public class WfeController {
         return "";
     }
 
-    @RequestMapping("/getnum")
-    public void getnum(String rows){
-        System.out.println(rows);
+    /**
+     * 根据流程实例编号查询流程详细信息
+     * @param rows
+     */
+    @RequestMapping("/getLeaveHistAvyInfo")
+    public String getLeaveHistAvyInfo(String processInstId){
+        LOG.info("processInstId=" + processInstId);
+        return "index";
     }
 }

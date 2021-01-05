@@ -66,12 +66,52 @@
 					]
 				});
 			});
-			function getHistAvyInfo(rows){
-			    $.post('/wfe/getnum',{"rows":rows});
+			function getHistAvyInfo(processInstId){
+				//console.info($("#dl").datagrid('getPanel'));
+				$("#dl").datagrid('getPanel').panel('minimize');
+
+				$("#table").show();
+			}
+			function getBack(){
+
+				$("#table").hide();
+				$("#dl").datagrid('getPanel').panel('maximize');
+				$("#dl").datagrid('getPanel').panel('restore');
+
 			}
 		</script>
 
 		<div id="dl" ></div>
 
+		<div id="table">
+			<div>
+				<span><h3>请假信息</h3></span>
+			</div>
+			<table style="margin: 0px;padding: 20px;width: 100%;border-spacing: 15px;background-color:#CCE6FF;text-align: left;font-size:16px;">
+				<tr><th width="3%"></th><th width="30%">姓名</th><td>张三</td></tr>
+				<tr><th ></th><th>请假开始时间</th><td>2020-01-01</td></tr>
+				<tr><th></th><th>请假结束时间</th><td>2020-01-01</td></tr>
+				<tr><th ></th><th>请假天数</th><td>1天</td></tr>
+				<tr><th></th><th>请假原因</th><td>abc</td></tr>
+				<tr><th></th><th>影响的课程</th><td>高数，语文</td></tr>
+			</table>
+		<div>
+				<span><h3>流程信息</h3></span>
+			</div>
+			<table style="margin: 0px;width: 100%;padding: 20px;border-spacing: 15px;background-color:#CCE6FF;text-align: left;font-size:16px;">
+				<tr><th width="3%"></th><th width="20%">流程状态</th><th>申请中</th><th></th></tr>
+			</table>
+			<br/>
+			<table style="margin: 0px;padding: 20px;width: 100%;border-spacing: 15px;background-color:#CCE6FF;text-align: left;font-size:16px;">
+				<tr><th width="3%"></th><th>步骤</th><th>操作员</th><th>操作</th><th>原因</th></tr>
+				<tr><th></th><th width="20%">第一步</th><td width="20%">张三</td><td>申请</td><td></td></tr>
+				<tr><th></th><th>第二步</th><td>李四</td><td>同意</td></tr>
+				<tr><th></th><th>第三步</th><td>王五</td><td>拒绝</td></tr>
+			</table>
+			<br/>
+			<div style="margin: 15px;">
+				<a href="javascript:void (0);" class="easyui-linkbutton" style="width:110px;height:40px;font-size:18px;" onClick="getBack()"><h3>返回</h3></a>
+			</div>
+		</div>
 	</body>
 </html>
