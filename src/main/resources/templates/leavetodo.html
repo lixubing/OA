@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+
+		<script type="text/javascript" src="easyui/jquery.min.js"></script>
+		<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+
+
+	</head>
+	<body>
+
+	<script>
+			$(function() {
+				$('#dl').datagrid({
+					url: '/wfe/findLeaveTodoList',
+					method: 'get',
+					striped: true,
+					rownumbers: true,
+					//pagination: true,
+					fit: true,
+					fitColumns: true,
+					nowrap: false,
+					singleSelect: true,
+					border: false,
+					idField: 'processInstId',
+					columns: [
+						[{
+								field: 'ck',
+
+								checkbox: true
+
+							},{
+								field: 'username',
+								title: '姓名',
+								width: 200
+							}, {
+								field: 'startDate',
+								title: '开始日期',
+								width: 200
+							}, {
+								field: 'endDate',
+								title: '结束日期',
+								width: 200
+							}, {
+								field: 'days',
+								title: '请假天数',
+								width: 150
+							}, {
+								field: 'description',
+								title: '请假原因',
+								width: 500
+							}, {
+								field: 'processInstId',
+								title: '流程实例id',
+								width: 5,
+								hidden: true
+							}
+
+						]
+					]
+				});
+			});
+			function agree(){
+				var getSelected = $('#dl').datagrid('getSelected');
+				if (getSelected == null){
+					$.messager.alert('提示','请先选择要操作的业务！','warning');
+					return;
+				}
+				var processInstId = getSelected.processInstId;
+				var text = $("#description").textbox('getValue');
+				text = text.replace(/(^\s*)|(\s*$)/g, "");
+				$.post(
+					"/wfe/approve",
+					{'description':text,'decision':'1','processInstId':processInstId},
+					function(data){
+						alert(data);
+					}
+				);
+			}
+			function refuse(){
+				var getSelected = $('#dl').datagrid('getSelected');
+				if (getSelected == null){
+					$.messager.alert('提示','请先选择要操作的业务！','warning');
+					return;
+				}
+				var processInstId = getSelected.processInstId;
+				console.info(getSelected.processInstId);
+				var text = $("#description").textbox('getValue');
+				text = text.replace(/(^\s*)|(\s*$)/g, "");
+				if (text == ""){
+					$.messager.alert('提示','拒绝时应填写原因！','warning');
+					return ;
+				}
+				$.post(
+					"/wfe/approve",
+					{'description':$("#description").val(),'decision':'0','processInstId':processInstId},
+					function(data){
+						alert(data);
+					}
+				);
+			}
+		</script>
+
+		<div class="easyui-layout" fit="true" style="padding:0">
+			<div region="center" data-options="border:false" style="padding:0">
+				<div id="dl" style="border:false"></div>
+			</div>
+			<div region="south" class="datagrid-toolbar" style="height: 200px;">
+				<div id="tb" style="margin: 15px;">
+					<form id="form">
+						<table cellspacing="15px">
+							<tr>
+								<th width="120px" align="right">原因 ：</th>
+								<td>
+									<input id="description" class="easyui-textbox description" type="text" name="description" style="width: 600px; height: 60px;"
+									 data-options="multiline:true,prompt:'审批拒绝时为必输!'" ></td>
+							</tr>
+							<tr>
+								<th align="right">
+									
+								</th>
+								<td align="right" >
+									
+									<a class="easyui-linkbutton" onclick="agree()" style="width: 80px;">同意  </a>
+									<span>&nbsp;&nbsp;</span>
+									<a class="easyui-linkbutton" onclick="refuse()" style="width: 80px;">拒绝</a>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>

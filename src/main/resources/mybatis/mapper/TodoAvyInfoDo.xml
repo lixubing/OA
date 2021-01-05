@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TodoAvyInfoDo">
+    <insert id="makeTodoAvyInf" parameterType="com.edu.oa.mdo.TodoAvyInfoDo">
+        insert into todo_avy_info (
+            process_inst_id,
+            avy_id,
+            tpl_no,
+            executor_id,
+            class_no,
+            tms,
+            function_id,
+            can_withdraw,
+            can_retreat)
+        values (
+            #{processInstId},
+            #{avyId},
+            #{tplNo},
+            #{executorId},
+            #{classNo},
+            #{tms},
+            #{functionId},
+            #{canWithdraw},
+            #{canRetreat}
+        )
+    </insert>
+    <delete id="deleteTodoAvyInf" parameterType="com.edu.oa.mdo.TodoAvyInfoDo">
+        delete from todo_avy_info
+        <where>
+            process_inst_id = #{processInstId}
+            <if test="executorId != null and executorId != ''">
+               and executor_id = #{executorId}
+            </if>
+            <if test="canWithdraw != null and canWithdraw != ''">
+               and can_withdraw = #{canWithdraw}
+            </if>
+            <if test="canRetreat != null and canRetreat != ''">
+                and can_retreat = #{canRetreat}
+            </if>
+        </where>
+    </delete>
+    <select id="getTodoList" resultType="com.edu.oa.mdo.TodoAvyInfoDo">
+        select process_inst_id as processInstId
+        from todo_avy_info
+        where
+        executor_id = #{executorId}
+        <if test="canWithdraw != null and canWithdraw != ''">
+            and can_withdraw = #{canWithdraw}
+        </if>
+        <if test="canRetreat != null and canRetreat != ''">
+            and can_retreat = #{canRetreat}
+        </if>
+    </select>
+</mapper>

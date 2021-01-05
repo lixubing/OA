@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TplAvyInfoDo">
+    <select id="getTplAvyInfoByTplNo" resultType="com.edu.oa.mdo.TplAvyInfoDo">
+        select avy_id as avyId,
+                tpl_no as tplNo,
+        executor_id as executorId,
+        class_no as classNo,
+        function_id as functionId from tpl_avy_info where tpl_no = #{tplNo}
+    </select>
+</mapper>

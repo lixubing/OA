@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SequenceDo">
+    <select id="getNextSequence" resultType="com.edu.oa.mdo.SequenceDo">
+        select sequence_id as sequenceId, num, step, min, max
+        from sequence where sequence_id = #{sequenceId}
+    </select>
+    <update id="updateByAdd" parameterType="com.edu.oa.mdo.SequenceDo">
+        update sequence set num = #{num} where sequence_id = #{sequenceId}
+    </update>
+</mapper>

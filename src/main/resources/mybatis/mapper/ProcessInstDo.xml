@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProcessInstDo">
+    <insert id="insert" parameterType="com.edu.oa.mdo.ProcessInstDo">
+        insert into process_info (process_inst_id,
+            avy_id,
+            tpl_no,
+            executor_id,
+            process_tpcd,
+            class_no,
+            tms,
+            function_id,
+            decision,
+            decision_desc,
+            owner_id)
+        values(
+            #{processInstId},
+            #{avyId},
+            #{tplNo},
+            #{executorId},
+            #{processTpcd},
+            #{classNo},
+            #{tms},
+            #{functionId},
+            #{decision},
+            #{decisionDesc},
+            #{ownerId})
+    </insert>
+    <update id="updateProcessInstByProcessInstId" parameterType="com.edu.oa.mdo.ProcessInstDo">
+        update process_info
+        set process_tpcd = #{processTpcd},
+            avy_id = #{avyId},
+            executor_id = #{executorId},
+        decision = #{decision},
+        decision_desc = #{decisionDesc},
+        class_no = #{classNo},
+        tms = #{tms},
+        owner_id = #{ownerId}
+        where process_inst_id = #{processInstId}
+    </update>
+    <select id="queryProcessInstDoByProcessInstId" resultType="com.edu.oa.mdo.ProcessInstDo">
+        select process_inst_id as processInstId,
+            owner_id as ownerId,
+            avy_id as avyId,
+            tpl_no as tplNo,
+            executor_id as executorId,
+            process_tpcd as processTpcd,
+            class_no as classNo,
+            function_id as functionId,
+            decision as decision,
+            decision_desc as decisionDesc
+        from process_info
+        where process_inst_id = #{processInstId}
+    </select>
+</mapper>

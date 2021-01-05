@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <title>主页</title>
+    <link rel="stylesheet" type="text/css" th:href="@{easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{easyui/themes/icon.css}">
+
+
+    <script type="text/javascript" th:src="@{easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{easyui/jquery.easyui.min.js}"></script>
+    <script type="text/javascript" th:src="@{easyui/locale/easyui-lang-zh_CN.js}"></script>
+    <style>
+        .north{
+            height:78px;
+        }
+       .north .north_title{
+            margin-left: 20px;
+				float: left;
+        }
+        .north .info {
+				margin-right: 30px;
+				float: right;
+				height: 70px;
+				line-height: 70px;
+			}
+        .north .info a:after{
+            content: '|';
+            margin: 0 5px;
+        }
+        .north .info a:last-child:after{
+				content: '';
+				margin: 0;
+			}
+    </style>
+</head>
+<body>
+<div id="cc" class="easyui-layout" style="width:600px;height:400px;" fit="true">
+    <div class="north" data-options="region:'north',split:false" >
+        <div class="north_title" ><h1 >edu管理系统</h1></div>
+        <div class="info">
+            <a>管理员</a>
+            <a>注销</a>
+        </div>
+    </div>
+    <div data-options="region:'south' " style="height:40px;overflow: hidden;" align="center">
+        <span>Copyright © 2020 环球时代科技有限公司 京ICP备180180168号-8</span> <br/>
+        <span><a href="#" onclick="return false">关于我们</a> &nbsp; </span>
+        <span><a href="#" onclick="return false">联系我们</a> &nbsp; </span>
+        <span><a href="#" onclick="return false">在线客服</a> &nbsp; </span>
+        <span><a href="#" onclick="return false">广告服务</a> &nbsp; </span>
+        <span><a href="#" onclick="return false">版权与免责声明</a></span>
+    </div>
+
+    <div data-options="region:'west',title:'功能菜单',split:true" style="width:250px; ">
+        <div><input type="button" onclick="refreshCenter()" value="refresh">center</input></div>
+        <div id="sidemenu"></div>
+    </div>
+    <div id="center" data-options="region:'center',title:'当前位置:'" href="centerIndex" style="padding:5px;"></div>
+</div>
+</body>
+<script>
+    $(function(){
+<!--        $('#center').panel('refresh','center');-->
+    });
+    function refreshCenter(){
+        $('#center').panel('refresh','center');
+    };
+
+
+		var width1 = $('#west'.width);
+
+		$(function() {
+			$('#sidemenu').sidemenu({
+				data: data,
+				border: false,
+				width: width1,
+
+				onSelect: function(data) {
+<!--					alert(data.href);-->
+					$('#center').panel('refresh',data.href);
+				}
+			});
+		})
+
+		var data = [{
+			text: 'Item1',
+			iconCls: 'icon-sum',
+			state: 'open',
+			children: [{
+				text: 'Option1'
+			}, {
+				text: 'Option2'
+			}, {
+				text: 'Option3',
+				children: [{
+					text: 'Option31'
+				}, {
+					text: 'Option32'
+				}]
+			}]
+		}, {
+			text: 'Item2',
+			iconCls: 'icon-more',
+			children: [{
+				text: 'Option4'
+			}, {
+				text: 'Option5'
+			}, {
+				text: 'Option6'
+			}]
+		}, {
+			text: '假期管理',
+			iconCls: 'icon-sum',
+			children: [{
+				text: '假期申请',
+				href: 'askleave'
+			}, {
+				text: '历史假期',
+				href: 'findMyLeave'
+			}, {
+				text: '假期审核',
+				href: 'leaveTodo'
+			}, {
+				text: '假期注销'
+			}, {
+				text: 'Option3',
+				children: [{
+					text: 'Option31'
+				}, {
+					text: 'Option32'
+				}]
+			}]
+		}, {
+			text: '个人中心',
+			iconCls: 'icon-sum',
+			children: [{
+				text: '我的信息'
+			}, {
+				text: 'Option2'
+			}, {
+				text: 'Option3',
+				children: [{
+					text: 'Option31'
+				}, {
+					text: 'Option32'
+				}]
+			}]
+		}];
+
+
+
+</script>
+</html>

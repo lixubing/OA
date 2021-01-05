@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LeaveInfoDo">
+    <insert id="save" parameterType="com.edu.oa.mdo.LeaveInfoDo">
+        insert into biz_info (
+            process_inst_id,
+            owner,
+            owner_id,
+            tpl_no,
+            class_no,
+            tms,
+            function_id,
+            apply_date,
+            start_date,
+            end_date,
+            days,
+            description,
+            course_name,
+            teacher_name,
+            ids)
+        values(
+            #{processInstId},
+            #{username},
+            #{userId},
+            #{tplNo},
+            #{classNo},
+            #{tms},
+            #{functionId},
+            #{applyDate},
+            #{startDate},
+            #{endDate},
+            #{days},
+            #{description},
+            #{courseName},
+            #{teacherName},
+            #{ids}
+        )
+    </insert>
+    <select id="queryTodoListByProcessInstId" resultType="com.edu.oa.mdo.LeaveInfoDo">
+        select process_inst_id as processInstId,
+        owner as username,
+        start_date as startDate,
+        end_date as endDate,
+        days as days,
+        description as description
+        from biz_info
+        where process_inst_id in
+        <foreach collection="processInstIdList" item="instId" open="(" close=")" separator=",">
+            #{instId}
+        </foreach>
+    </select>
+</mapper>
