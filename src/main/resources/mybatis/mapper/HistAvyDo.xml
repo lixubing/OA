@@ -31,7 +31,8 @@
         b.start_date as startDate,
         b.end_date as endDate,
         b.days,
-        p.process_tpcd as processTpcd
+        p.process_tpcd as processTpcd,
+        b.description
         from hist_avy h, process_info p, biz_info b
         where
         h.process_inst_id = p.process_inst_id
@@ -45,5 +46,14 @@
         h.process_inst_id = p.process_inst_id
         and h.process_inst_id = b.process_inst_id
         and h.executor_id = #{executorId}
+    </select>
+    <select id="queryHistAvyInfoByProcessInstId" resultType="com.edu.oa.mdo.HistAvyDo">
+        select h.avy_id as avyId,
+            u.username as executorName,
+            h.decision,
+            h.decision_desc as decisionDesc
+        from hist_avy h,user u
+        where h.executor_id = u.user_id
+        and h.process_inst_id = #{processInstId}
     </select>
 </mapper>

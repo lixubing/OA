@@ -12,6 +12,11 @@ import java.util.Map;
 @Service
 public class CourseServiceImpl implements CourseService {
 
+    /**
+     * 根据学生id查询该学生的所有课程及对应老师
+     * @param studentNo
+     * @return
+     */
     @Override
     public Map<String, List> getCourseAndTeacher(String studentNo) {
         CourseDo mdo = new CourseDo();

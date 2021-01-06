@@ -1,5 +1,7 @@
 package com.edu.oa.mdo;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 public class HistAvyDo extends BaseDo {
@@ -7,6 +9,8 @@ public class HistAvyDo extends BaseDo {
     private String avyId;
     private String tplNo;
     private String executorId;
+    /**操作员姓名*/
+    private String executorName;
     private String classNo;
     private String functionId;
     private String decision;
@@ -16,6 +20,16 @@ public class HistAvyDo extends BaseDo {
     private String endDate;
     private String days;
     private String processTpcd;
+    /**请假理由*/
+    private String description;
+
+    public String getExecutorName() {
+        return executorName;
+    }
+
+    public void setExecutorName(String executorName) {
+        this.executorName = executorName;
+    }
 
     public String getStartDate() {
         return startDate;
@@ -123,5 +137,15 @@ public class HistAvyDo extends BaseDo {
      */
     public List<HistAvyDo> queryHistAvyDoByExecutorId(){
         return (List<HistAvyDo>) getListByParam("HistAvyDo.queryHistAvyDoByExecutorId", this);
+    }
+
+    /**
+     * 根据流程实例id查询流程详细信息
+     * @return
+     */
+    public List<HistAvyDo> queryHistAvyInfoByProcessInstId(){
+        if (StringUtils.isBlank(this.getProcessInstId()))
+            throw new RuntimeException("processInstId不存在！");
+        return (List<HistAvyDo>) getListByParam("HistAvyDo.queryHistAvyInfoByProcessInstId", this);
     }
 }
