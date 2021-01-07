@@ -116,3 +116,8 @@ CREATE TABLE `user` (
   `executor_id` varchar(32) DEFAULT NULL COMMENT '流程执行的角色id',
   UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+CREATE TABLE `teacher_leave` (
+  `teacher_no` varchar(32) NOT NULL,
+  `process_inst_id` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

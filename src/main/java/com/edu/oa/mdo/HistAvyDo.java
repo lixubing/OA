@@ -148,4 +148,5 @@ public class HistAvyDo extends BaseDo {
             throw new RuntimeException("processInstId不存在！");
         return (List<HistAvyDo>) getListByParam("HistAvyDo.queryHistAvyInfoByProcessInstId", this);
     }
+
 }

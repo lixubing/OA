@@ -38,6 +38,10 @@
             #{ids}
         )
     </insert>
+    <insert id="saveTeacherLeave" parameterType="com.edu.oa.mdo.LeaveInfoDo">
+        insert into teacher_leave (teacher_no, process_inst_id)
+        values (#{teacherNo}, #{processInstId})
+    </insert>
     <select id="queryTodoListByProcessInstId" resultType="com.edu.oa.mdo.LeaveInfoDo">
         select process_inst_id as processInstId,
         owner as username,
@@ -50,5 +54,38 @@
         <foreach collection="processInstIdList" item="instId" open="(" close=")" separator=",">
             #{instId}
         </foreach>
+    </select>
+    <select id="queryTeacherLeaveInfoByTeacherNo" resultType="com.edu.oa.mdo.LeaveInfoDo">
+        select
+            b.start_date as startDate,
+            b.end_date as endDate,
+            b.owner as username,
+            p.process_tpcd as processTpcd
+        from biz_info b,teacher_leave t,process_info p
+        where t.process_inst_id = b.process_inst_id
+            and t.process_inst_id = p.process_inst_id
+            and t.teacher_no = #{teacherNo}
+    </select>
+    <select id="queryTeacherLeaveInfoByTeacherNo_COUNT" resultType="com.edu.oa.mdo.LeaveInfoDo">
+        select count(1)
+        from biz_info b,teacher_leave t,process_info p
+        where t.process_inst_id = b.process_inst_id
+            and t.process_inst_id = p.process_inst_id
+            and t.teacher_no = #{teacherNo}
+    </select>
+    <delete id="deleteTeacherLeave" parameterType="com.edu.oa.mdo.LeaveInfoDo">
+        delete from teacher_leave where process_inst_id = #{processInstId}
+    </delete>
+    <select id="queryRefuseList" resultType="com.edu.oa.mdo.LeaveInfoDo">
+        select  b.process_inst_id as processInstId,
+                b.start_date as startDate,
+                b.end_date as endDate,
+                b.days,
+                p.process_tpcd as processTpcd
+        from biz_info b,process_inst p
+        where   b.process_inst_id = p.process_inst_id
+                and p.process_tpcd = #{processTpcd}
+                and b.owner = #{userId}
+                and b.start_date > #{startDate}
     </select>
 </mapper>

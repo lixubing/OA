@@ -1,5 +1,6 @@
 package com.edu.oa.mdo;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.io.Serializable;
@@ -27,6 +28,25 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
     private String ids;
     /**查询用*/
     private List<String> processInstIdList;
+    private String teacherNo;
+    /**流程状态*/
+    private String processTpcd;
+
+    public String getProcessTpcd() {
+        return processTpcd;
+    }
+
+    public void setProcessTpcd(String processTpcd) {
+        this.processTpcd = processTpcd;
+    }
+
+    public String getTeacherNo() {
+        return teacherNo;
+    }
+
+    public void setTeacherNo(String teacherNo) {
+        this.teacherNo = teacherNo;
+    }
 
     public List<String> getProcessInstIdList() {
         return processInstIdList;
@@ -149,6 +169,13 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
     }
 
     public int save(){
+        if (StringUtils.isNotBlank(this.getIds())) {
+            String[] split = this.getIds().split("|");
+            for (String id : split) {
+               this.setTeacherNo(id);
+               insert("LeaveInfoDo.saveTeacherLeave", this);
+            }
+        }
         return insert("LeaveInfoDo.save", this);
     }
 
@@ -158,5 +185,16 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
      */
     public List<LeaveInfoDo> queryTodoListByProcessInstId(){
        return (List<LeaveInfoDo>)getListByParam("LeaveInfoDo.queryTodoListByProcessInstId", this);
+    }
+    public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNo(){
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTeacherLeaveInfoByTeacherNo", this);
+    }
+
+    public int deleteTeacherLeave() {
+        return delete("LeaveInfoDo.deleteTeacherLeave", this);
+    }
+
+    public List<LeaveInfoDo> queryRefuseList(){
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryRefuseList", this);
     }
 }

@@ -29,10 +29,8 @@ public class StartProcessServiceImpl implements IStartProcessService {
         //3.创建流程实例
         ProcessInstDo processInstDo = processService.makeProcess(templateInfo);
         //4.保存请求信息
-        leaveInfoDo.setProcessInstId(processInstDo.getProcessInstId());
-        leaveInfoDo.setTplNo(processInstDo.getTplNo());
-//        BeanUtils.copyProperties();
-        leaveInfoDo.save();
+        saveLeaveInfo(leaveInfoDo, processInstDo);
+
         //5.查找下一步执行人
         String avyId = processInstDo.getAvyId();
         int i = Integer.parseInt(avyId) + 1;
@@ -45,6 +43,18 @@ public class StartProcessServiceImpl implements IStartProcessService {
         processService.deleteTodoAvyInf(processInstDo);
         //9.更新流程实例数据
         processService.updateProcessInfo(processInstDo);
+    }
+
+    /**
+     * 保存请假的信息以及将影响的课程处理保存
+     * @param leaveInfoDo
+     * @param processInstDo
+     */
+    private void saveLeaveInfo(LeaveInfoDo leaveInfoDo, ProcessInstDo processInstDo) {
+        leaveInfoDo.setProcessInstId(processInstDo.getProcessInstId());
+        leaveInfoDo.setTplNo(processInstDo.getTplNo());
+        leaveInfoDo.save();
+
     }
 
     private void completeLeaveInfo(LeaveInfoDo leaveInfoDo) {

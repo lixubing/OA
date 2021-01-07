@@ -1,5 +1,6 @@
 package com.edu.oa.service.impl;
 
+import com.edu.oa.mdo.LeaveInfoDo;
 import com.edu.oa.mdo.ProcessInstDo;
 import com.edu.oa.service.IDealProcessService;
 import com.edu.oa.service.IProcessService;
@@ -64,8 +65,10 @@ public class DealProcessServiceImpl implements IDealProcessService {
             //7.更新流程实例
             processInstDo.setProcessTpcd(Constant.processTPCD_14);
             processInstDo.updateProcessInstByProcessInstId();
-            //删除本实例的所有待办
-
+            //删除本实例影响课程的老师实例关系表
+            LeaveInfoDo leaveInfoDo = new LeaveInfoDo();
+            leaveInfoDo.setProcessInstId(processInstDo.getProcessInstId());
+            leaveInfoDo.deleteTeacherLeave();
         } else {
             throw new RuntimeException("审核标志错误：decision = " + decision);
         }
