@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -89,6 +90,9 @@ public class WfeController {
     @ResponseBody
     public HistAvyVo fidMyHistLeave(Integer page, Integer rows){
         LOG.info("page = " + page + " & rows = " + rows);
+        ModelAndView mv = new ModelAndView();
+
+        mv.addObject("name", "哈哈");
         return histService.getMyHistLeave(page, rows);
 //        return "{\"total\":20,\"rows\":[\n" +
 //                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
@@ -140,7 +144,7 @@ public class WfeController {
 
     /**
      * 根据流程实例编号查询流程详细信息
-     * @param rows
+     * @param
      */
     @RequestMapping("/getLeaveHistAvyInfo")
     public String getLeaveHistAvyInfo(String processInstId){
