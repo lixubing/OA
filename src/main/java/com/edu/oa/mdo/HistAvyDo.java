@@ -23,6 +23,14 @@ public class HistAvyDo extends BaseDo {
     /**请假理由*/
     private String description;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getExecutorName() {
         return executorName;
     }
@@ -149,4 +157,7 @@ public class HistAvyDo extends BaseDo {
         return (List<HistAvyDo>) getListByParam("HistAvyDo.queryHistAvyInfoByProcessInstId", this);
     }
 
+    public int deleteHistAvyByProcessInstId() {
+        return delete("HistAvyDo.deleteHistAvyByProcessInstId", this);
+    }
 }

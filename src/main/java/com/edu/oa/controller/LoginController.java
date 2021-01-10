@@ -80,4 +80,37 @@ public class LoginController {
         return "leaveTodo";
     }
 
+    /**
+     * 已拒绝列表
+     * @return
+     */
+    @RequestMapping("/findRefuseList")
+    public String findRefuseList(){
+        return "refuseList";
+    }
+    /**
+     * 可收回列表
+     * @return
+     */
+    @RequestMapping("/myCanWithdrawLeave")
+    public String myCanWithdrawLeave(){
+        return "myCanWithdrawLeave";
+    }
+    /**
+     * 维护列表（已收回）
+     * @return
+     */
+    @RequestMapping("/maintenanceLeave")
+    public String maintenanceLeave(){
+        return "maintenanceLeave";
+    }
+    /**
+     * 详情
+     * @return
+     */
+    @RequestMapping("/leaveInfo")
+    public String leaveInfo(){
+        return "leaveInfo";
+    }
+
 }

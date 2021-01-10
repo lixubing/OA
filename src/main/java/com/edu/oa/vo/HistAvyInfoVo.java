@@ -15,9 +15,18 @@ public class HistAvyInfoVo {
     /**流程状态*/
     private String processTpcd;
     private String processInstId;
+    private String course;
 
     /**流程历史执行信息*/
     private List<HistAvyInfoSubVo> subVoList;
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
 
     public String getOwner() {
         return owner;

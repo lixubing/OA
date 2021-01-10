@@ -8,6 +8,8 @@ import com.edu.oa.util.SwapAreaUtils;
 import com.edu.oa.vo.HistAvyInfoSubVo;
 import com.edu.oa.vo.HistAvyInfoVo;
 import com.edu.oa.vo.HistAvyVo;
+import com.edu.oa.vo.RefuseLeaveVo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -44,6 +46,22 @@ public class HistServiceImpl implements IHistService {
         for (HistAvyDo avyDo : histAvyDos) {
             HistAvyInfoVo vo = new HistAvyInfoVo();
             BeanUtils.copyProperties(avyDo, vo);
+            //查询影响的课程
+            LeaveInfoDo leaveInfoDo = new LeaveInfoDo();
+            leaveInfoDo.setProcessInstId(avyDo.getProcessInstId());
+            List<LeaveInfoDo> leaveInfoDos = leaveInfoDo.queryCourseByProcessInstId();
+            StringBuilder sb = new StringBuilder();
+            LOG.info("leaveInfoDos" + leaveInfoDos);
+            for (LeaveInfoDo infoDo : leaveInfoDos) {
+                if (StringUtils.isNotBlank(infoDo.getCourseName())) {
+                    sb.append(infoDo.getCourseName()).append(",");
+                }
+            }
+
+            if (sb.indexOf(",") > 0){
+                sb.deleteCharAt(sb.length() - 1);
+            }
+            vo.setCourse(sb.toString());
             //查询详细流程信息
             List<HistAvyDo> infoList = avyDo.queryHistAvyInfoByProcessInstId();
             List<HistAvyInfoSubVo> subVoList = new ArrayList<>();
@@ -98,7 +116,7 @@ public class HistServiceImpl implements IHistService {
      * 查询已拒绝的
      * @return
      */
-    public List<HistAvyInfoVo> getRefuseList(){
+    public List<RefuseLeaveVo> getRefuseList(){
         String userId = SwapAreaUtils.getCommonInfo().getUser().getUserId();
         LeaveInfoDo leaveInfoDo = new LeaveInfoDo();
         leaveInfoDo.setUserId(userId);
@@ -108,11 +126,11 @@ public class HistServiceImpl implements IHistService {
         String now = format.format(new Date());
         leaveInfoDo.setStartDate(now);
         List<LeaveInfoDo> leaveInfoDos = leaveInfoDo.queryRefuseList();
-        List<HistAvyInfoVo> result = new ArrayList<>();
+        List<RefuseLeaveVo> result = new ArrayList<>();
         for (LeaveInfoDo infoDo : leaveInfoDos) {
-            HistAvyInfoVo histAvyInfoVo= new HistAvyInfoVo();
-            BeanUtils.copyProperties(infoDo, histAvyInfoVo);
-            result.add(histAvyInfoVo);
+            RefuseLeaveVo refuseLeaveVo= new RefuseLeaveVo();
+            BeanUtils.copyProperties(infoDo, refuseLeaveVo);
+            result.add(refuseLeaveVo);
         }
         return result;
     }

@@ -15,6 +15,23 @@ public class TodoAvyInfoDo extends BaseDo{
     private String  canWithdraw;
     private String  canRetreat;
     private String username;
+    private String withdrew;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getWithdrew() {
+        return withdrew;
+    }
+
+    public void setWithdrew(String withdrew) {
+        this.withdrew = withdrew;
+    }
 
     public String getProcessInstId() {
         return processInstId;
@@ -123,8 +140,16 @@ public class TodoAvyInfoDo extends BaseDo{
      * @return 流程实例id
      */
     public List<TodoAvyInfoDo> getTodoList(){
-        if (StringUtils.isBlank(this.getCanWithdraw()) && StringUtils.isBlank(this.getCanRetreat()))
-            throw new RuntimeException("可收回或可退回标志不能为空！");
+        if (StringUtils.isBlank(this.getCanWithdraw()) && StringUtils.isBlank(this.getCanRetreat()) && StringUtils.isBlank(this.getWithdrew()))
+            throw new RuntimeException("可收回或可退回或已收回标志不能为空！");
         return (List<TodoAvyInfoDo>)getListByParam("TodoAvyInfoDo.getTodoList", this);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int updateToWithdrew() {
+        return update("TodoAvyInfoDo.updateToWithdrew", this);
     }
 }

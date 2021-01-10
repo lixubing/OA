@@ -26,8 +26,6 @@
 					fit: true,
 					fitColumns: true,
 					border: false,
-					pageSize:2,
-					pageList:[2,4,6,8,10],
 					columns: [
 						[{
 								field: 'startDate',
@@ -81,8 +79,23 @@
 				console.info(va);
 				//console.info($("#dl").datagrid('getPanel'));
 				$("#dl").datagrid('getPanel').panel('minimize');
-				$("#name").html(result.owner)
-				$("#endDate").html(result.endDate)
+				$("#name").html(result.owner);
+				$("#endDate").html(result.endDate);
+				$("#startDate").html(result.startDate);
+				$("#days").html(result.days);
+				$("#description").html(result.description);
+				$("#course").html(result.course);
+
+				var processTpcd = result.processTpcd;
+				if (processTpcd == "12"){
+					$("#processTpcd").html("申请成功");
+				}else if (processTpcd == "10"){
+					$("#processTpcd").html("申请中");
+				}else if (processTpcd == "14"){
+					$("#processTpcd").html("已删除");
+				}
+
+
 				$("#table").show();
 				var arr = result.subVoList;
 				var str = "";

@@ -52,5 +52,12 @@
         <if test="canRetreat != null and canRetreat != ''">
             and can_retreat = #{canRetreat}
         </if>
+        <if test="withdrew != null and withdrew != ''">
+            and withdrew = #{withdrew}
+        </if>
     </select>
+    <update id="updateToWithdrew" parameterType="com.edu.oa.mdo.TodoAvyInfoDo">
+        update todo_avy_info set can_withdraw = "0",withdrew = "1"
+        where process_inst_id = #{processInstId} and executor_id = #{executorId}
+    </update>
 </mapper>

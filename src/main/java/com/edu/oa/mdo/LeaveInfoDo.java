@@ -22,6 +22,7 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
     private String functionId;
     /**课程*/
     private String courseName;
+    private String courseNo;
     /**老师*/
     private String teacherName;
     /**请假涉及的老师的id*/
@@ -31,6 +32,14 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
     private String teacherNo;
     /**流程状态*/
     private String processTpcd;
+
+    public String getCourseNo() {
+        return courseNo;
+    }
+
+    public void setCourseNo(String courseNo) {
+        this.courseNo = courseNo;
+    }
 
     public String getProcessTpcd() {
         return processTpcd;
@@ -170,11 +179,27 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
 
     public int save(){
         if (StringUtils.isNotBlank(this.getIds())) {
-            String[] split = this.getIds().split("|");
+            String[] split = this.getIds().split("\\|");
+            String courseName = "";
+            String teacherName = "";
             for (String id : split) {
                this.setTeacherNo(id);
-               insert("LeaveInfoDo.saveTeacherLeave", this);
+               //查询课程名称
+                LeaveInfoDo course = (LeaveInfoDo) getObjectByParam("LeaveInfoDo.getCourseByTeacherNo", this);
+                if (course != null){
+                    courseName = courseName.concat(course.getCourseName());
+                    courseName = courseName.concat(",");
+                    teacherName = teacherName.concat(course.getTeacherName());
+                    teacherName = teacherName.concat(",");
+
+                    this.setCourseNo(course.getCourseNo());
+                    this.setCourseName(course.getCourseName());
+                    this.setTeacherName(course.getTeacherName());
+                }
+                insert("LeaveInfoDo.saveTeacherLeave", this);
             }
+            this.setTeacherName(teacherName);
+            this.setCourseName(courseName);
         }
         return insert("LeaveInfoDo.save", this);
     }
@@ -196,5 +221,13 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
 
     public List<LeaveInfoDo> queryRefuseList(){
         return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryRefuseList", this);
+    }
+
+    /**
+     * 根据流程实例编号查询影响课程
+     * @return
+     */
+    public List<LeaveInfoDo> queryCourseByProcessInstId() {
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryCourseByProcessInstId", this);
     }
 }

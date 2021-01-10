@@ -2,6 +2,7 @@ package com.edu.oa.service;
 
 import com.edu.oa.mdo.ProcessInstDo;
 import com.edu.oa.mdo.TemplateInfo;
+import com.edu.oa.vo.RefuseLeaveVo;
 
 import java.util.List;
 
@@ -43,4 +44,6 @@ public interface IProcessService {
      * @param processInst
      */
     public void updateProcessInfo(ProcessInstDo processInst);
+
+    void withdrawTodo(String processInstId);
 }

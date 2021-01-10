@@ -9,6 +9,7 @@ import com.edu.oa.util.Constant;
 import com.edu.oa.util.JsonResult;
 import com.edu.oa.util.SwapAreaUtils;
 import com.edu.oa.vo.HistAvyVo;
+import com.edu.oa.vo.RefuseLeaveVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,8 @@ public class WfeController {
     private IDealProcessService dealProcess;
     @Resource
     private IHistService histService;
+    @Resource
+    private IProcessService processService;
 
     /**
      * 为控制器添加通知，在控制器之前执行
@@ -150,5 +153,53 @@ public class WfeController {
     public String getLeaveHistAvyInfo(String processInstId){
         LOG.info("processInstId=" + processInstId);
         return "index";
+    }
+
+    /**
+     * 查询已拒绝的请假列表
+     * @return
+     */
+    @RequestMapping("/findMyRefuseLeave")
+    @ResponseBody
+    public List<RefuseLeaveVo> findMyRefuseLeave(){
+        List<RefuseLeaveVo> refuseList = histService.getRefuseList();
+        return refuseList;
+    }
+    /**
+     * 查询可收回请假列表
+     * @return
+     */
+    @RequestMapping("/findMyCanWithdrawLeave")
+    @ResponseBody
+    public List<RefuseLeaveVo> findMyCanWithdrawLeave(){
+        List<RefuseLeaveVo> refuseList = todoService.getCanWithdrawLeaveList();
+        return refuseList;
+    }
+    /**
+     * 查询已收回请假列表
+     * @return
+     */
+    @RequestMapping("/findWithdrewLeave")
+    @ResponseBody
+    public List<RefuseLeaveVo> findWithdrewLeave(){
+        List<RefuseLeaveVo> refuseList = todoService.getWithdrewLeaveList();
+        return refuseList;
+    }
+    /**
+     * 收回待办
+     * @return
+     */
+    @RequestMapping("/withdraw")
+    @ResponseBody
+    public JsonResult withdraw(String processInstId){
+        LOG.info("processInstId=" + processInstId);
+        JsonResult jsonResult = new JsonResult();
+        try {
+            processService.withdrawTodo(processInstId);
+        }catch (Exception e){
+            jsonResult.setSuccess(false);
+            jsonResult.setMsg(e.getMessage());
+        }
+        return jsonResult;
     }
 }

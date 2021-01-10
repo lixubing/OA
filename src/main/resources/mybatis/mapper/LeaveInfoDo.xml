@@ -39,8 +39,19 @@
         )
     </insert>
     <insert id="saveTeacherLeave" parameterType="com.edu.oa.mdo.LeaveInfoDo">
-        insert into teacher_leave (teacher_no, process_inst_id)
-        values (#{teacherNo}, #{processInstId})
+        insert into teacher_leave (
+            teacher_no,
+            process_inst_id,
+            teacher_name,
+            course_no,
+            course_name)
+        values (
+            #{teacherNo},
+            #{processInstId},
+            #{teacherName},
+            #{courseNo},
+            #{courseName}
+        )
     </insert>
     <select id="queryTodoListByProcessInstId" resultType="com.edu.oa.mdo.LeaveInfoDo">
         select process_inst_id as processInstId,
@@ -48,6 +59,7 @@
         start_date as startDate,
         end_date as endDate,
         days as days,
+        ids,
         description as description
         from biz_info
         where process_inst_id in
@@ -82,10 +94,22 @@
                 b.end_date as endDate,
                 b.days,
                 p.process_tpcd as processTpcd
-        from biz_info b,process_inst p
+        from biz_info b,process_info p
         where   b.process_inst_id = p.process_inst_id
                 and p.process_tpcd = #{processTpcd}
                 and b.owner = #{userId}
                 and b.start_date > #{startDate}
+    </select>
+    <select id="queryCourseByProcessInstId" resultType="com.edu.oa.mdo.LeaveInfoDo">
+        select course_name as courseName,
+                teacher_name as teacherName
+        from teacher_leave where process_inst_id = #{processInstId}
+    </select>
+    <select id="getCourseByTeacherNo" resultType="com.edu.oa.mdo.LeaveInfoDo">
+        select teacher_no as teacherNo,
+            teacher_name as teacherName,
+            course_no as courseNo,
+            course_name as courseName
+        from teacher_course where teacher_no = #{teacherNo}
     </select>
 </mapper>

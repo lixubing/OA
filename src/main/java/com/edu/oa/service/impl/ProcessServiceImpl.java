@@ -7,6 +7,7 @@ import com.edu.oa.util.CommonInfo;
 import com.edu.oa.util.CommonUtils;
 import com.edu.oa.util.Constant;
 import com.edu.oa.util.SwapAreaUtils;
+import com.edu.oa.vo.RefuseLeaveVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -230,6 +231,38 @@ public class ProcessServiceImpl implements IProcessService {
         }
         processInst.updateProcessInstByProcessInstId();
     }
+
+    /**
+     * 收回待办
+     * @param processInstId
+     * @return
+     */
+    @Override
+    public void withdrawTodo(String processInstId) {
+        //1.删除下一步操作员待办
+        TodoAvyInfoDo todoAvyInfoDo = new TodoAvyInfoDo();
+        todoAvyInfoDo.setProcessInstId(processInstId);
+        todoAvyInfoDo.setCanRetreat(Constant.NUM_1);
+        todoAvyInfoDo.deleteTodoAvyInf();
+        //2.修改当前操作员的待办标志 可回收待办->已收回待办
+        String userId = SwapAreaUtils.getCommonInfo().getUser().getUserId();
+        todoAvyInfoDo.setExecutorId(userId);
+        todoAvyInfoDo.setCanWithdraw(Constant.NUM_1);
+        todoAvyInfoDo.updateToWithdrew();
+        //3.删除当前操作员历史操作数据
+        HistAvyDo histAvyDo = new HistAvyDo();
+        histAvyDo.setExecutorId(userId);
+        histAvyDo.setProcessInstId(processInstId);
+        histAvyDo.deleteHistAvyByProcessInstId();
+        //4.更改流程实例表数据为 11-已收回
+        ProcessInstDo processInstDo = new ProcessInstDo();
+        processInstDo.setProcessInstId(processInstId);
+        processInstDo = processInstDo.queryProcessInstDoByProcessInstId();
+        processInstDo.setProcessTpcd(Constant.processTPCD_11);
+        processInstDo.updateProcessInstByProcessInstId();
+
+    }
+
     /**
      * 获取下一个用户节点
      */

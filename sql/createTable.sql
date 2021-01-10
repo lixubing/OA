@@ -119,5 +119,16 @@ CREATE TABLE `user` (
 
 CREATE TABLE `teacher_leave` (
   `teacher_no` varchar(32) NOT NULL,
-  `process_inst_id` varchar(32) NOT NULL
+  `process_inst_id` varchar(32) NOT NULL,
+  `teacher_name` varchar(32) DEFAULT NULL,
+  `course_no` varchar(32) DEFAULT NULL,
+  `course_name` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+CREATE TABLE `teacher_course` (
+  `teacher_no` varchar(32) NOT NULL,
+  `teacher_name` varchar(32) DEFAULT NULL,
+  `course_no` varchar(32) DEFAULT NULL,
+  `course_name` varchar(32) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+

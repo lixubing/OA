@@ -2,45 +2,44 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<title></title>
 		<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
 		<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
-
+		
 		<script type="text/javascript" src="easyui/jquery.min.js"></script>
 		<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
-		<title></title>
-
 	</head>
 	<body>
 	<style>
-			#ff div{
+			#leaveInfo div{
 				margin-bottom:20px;
 			}
-			#ff div:nth-child(3) label{
+			#leaveInfo div:nth-child(3) label{
 				vertical-align: top;
 			}
 <!--			#ff div label{-->
 
 <!--				width: 80px;-->
 <!--			}-->
-			#ff label{
+			#leaveInfo label{
 				display: inline-block;
-				width: 250px;
+				width: 120px;
 				text-align: right;
 			}
-			#ff div {
-				width: 700px;
-			}
-			#ff{
+<!--			#leaveInfo div {-->
+<!--				width: 700px;-->
+<!--			}-->
+<!--			#leaveInfo{-->
 
-				margin: 60px 70px;
-			}
-			#ff div .choose{
+<!--				margin: 60px 70px;-->
+<!--			}-->
+			#leaveInfo div .choose{
 				width: 180px;
 			}
 		</style>
 	<script>
-			var ff = $("FF");
+			var ff = $("leaveInfo");
 			$(function(){
 				$("#endDate").datebox({
 					onSelect:function(date){
@@ -69,7 +68,7 @@
 			});
 
 			function submitForm(){
-				var ff = $("#ff");
+				var ff = $("#leaveInfo");
 				var days =  $("#days").textbox('getValue');
 				console.info(days);
 				// console.info(ff.Serializer);
@@ -83,10 +82,11 @@
 							if (data.success){
 								$.messager.show({
 									title:'提示',
-									msg:'申请成功',
+									msg:'修改成功',
 									timeout:4000
 								});
-								$('#center').panel('refresh','askleave');
+								$("#createDialog").dialog('close');
+								$('#center').panel('refresh','maintenanceLeave');
 							}else{
 								var msg = data.msg;
 								$.messager.alert('提示',msg,'warning');
@@ -97,7 +97,7 @@
 
 			}
 			function clearForm(){
-				$('#ff').form('clear');
+				$('#leaveInfo').form('clear');
 			}
 
 			function chooseDialog(){
@@ -135,43 +135,44 @@
 			}
 
 		</script>
-	<div style="margin-left: 10%; margin-top: 5%;">
-		<form id="ff" method="post">
-			<div>
-				<label for="startDate">开始日期:</label>
-				<input id="startDate" class="easyui-datebox startdate" type="text" name="startDate" data-options="required:true,editable:false" />
-			</div>
-			<div>
-				<label for="endDate">结束日期:</label>
-				<input id="endDate" class="easyui-datebox enddate" type="text" name="endDate" data-options="required:true,editable:false" />
-			</div>
-			<div>
-				<label for="days">请假天数:</label>
-				<input id="days" class="easyui-textbox days" type="text" name="days" data-options="value:0,editable:false" />
-			</div>
-			<div>
-				<label for="script">请假原因:</label>
-				<input id="script" class="easyui-textbox script" type="text" name="description" style="width: 400px; height: 100px;"
-				 data-options="required:true,multiline:true">
-			</div>
-			<div>
-				<label for="choose">选择影响的课程:</label>
-				<a id="choose" class="easyui-linkbutton choose" type="button" name="choose" data-options="iconCls:'icon-search'" >选择</a>
-			</div>
-			<div>
-				<label for="courseTeacher">涉及课程及老师:</label>
-				<input id="courseTeacher" class="easyui-textbox courseTeacher" type="text" name="courseTeacher" style="width: 400px; height: 100px;"
-					   data-options="required:true,multiline:true,editable:false" />
-			</div>
-			<div style="display:none">
 
-				<input id="ids" class="easyui-textbox" name="ids" style="" editable="false" />
-			</div>
-			<div style="padding:5px 0;text-align: center;">
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">申请</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">清空</a>
-			</div>
-		</form>
-	</div>
+		<div style="margin-left: 2%; margin-top: 3%;">
+			<form id="leaveInfo" method="post">
+				<div>
+					<label for="startDate">开始日期:</label>
+					<input id="startDate" class="easyui-datebox startdate" type="text" name="startDate" data-options="required:true,editable:false" />
+				</div>
+				<div>
+					<label for="endDate">结束日期:</label>
+					<input id="endDate" class="easyui-datebox enddate" type="text" name="endDate" data-options="required:true,editable:false" />
+				</div>
+				<div>
+					<label for="days">请假天数:</label>
+					<input id="days" class="easyui-textbox days" type="text" name="days" data-options="value:0,editable:false" />
+				</div>
+				<div>
+					<label for="script">请假原因:</label>
+					<input id="script" class="easyui-textbox script" type="text" name="description" style="width: 400px; height: 100px;"
+						   data-options="required:true,multiline:true">
+				</div>
+				<div>
+					<label for="choose">选择影响的课程:</label>
+					<a id="choose" class="easyui-linkbutton choose" type="button" name="choose" data-options="iconCls:'icon-search'" >选择</a>
+				</div>
+				<div>
+					<label for="courseTeacher">涉及课程及老师:</label>
+					<input id="courseTeacher" class="easyui-textbox courseTeacher" type="text" name="courseTeacher" style="width: 400px; height: 100px;"
+						   data-options="required:true,multiline:true,editable:false" />
+				</div>
+				<div style="display:none">
+
+					<input id="ids" class="easyui-textbox" name="ids" style="" editable="false" />
+				</div>
+				<div style="padding:5px 0;text-align: center;">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">申请</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">清空</a>
+				</div>
+			</form>
+		</div>
 	</body>
 </html>

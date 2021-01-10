@@ -17,8 +17,11 @@ public class Constant {
     public static final String decision_1 = "1";
     /**10-正在执行*/
     public static final String processTPCD_10 = "10";
+    /**11-待办已收回*/
+    public static final String processTPCD_11 = "11";
     /**12-已完成*/
     public static final String processTPCD_12 = "12";
     /**14-已拒绝*/
     public static final String processTPCD_14 = "14";
+    public static final String NUM_1 = "1";
 }
