@@ -112,4 +112,13 @@
             course_name as courseName
         from teacher_course where teacher_no = #{teacherNo}
     </select>
+    <update id="updateByProcessInstId" parameterType="com.edu.oa.mdo.LeaveInfoDo">
+        update biz_info set
+                tpl_no = #{tplNo},
+                tms = #{tms}
+        where process_inst_id = #{processInstId}
+    </update>
+    <delete id="deleteLeaveInfoByProcessInstId" parameterType="com.edu.oa.mdo.LeaveInfoDo">
+        delete from biz_info where process_inst_id = #{processInstId}
+    </delete>
 </mapper>

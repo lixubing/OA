@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+		
+		<script type="text/javascript" src="easyui/jquery.min.js"></script>
+		<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+	</head>
+	<body>
+	<style>
+			#leaveInfo div{
+				margin-bottom:20px;
+			}
+			#leaveInfo div:nth-child(3) label{
+				vertical-align: top;
+			}
+<!--			#ff div label{-->
+
+<!--				width: 80px;-->
+<!--			}-->
+			#leaveInfo label{
+				display: inline-block;
+				width: 120px;
+				text-align: right;
+			}
+<!--			#leaveInfo div {-->
+<!--				width: 700px;-->
+<!--			}-->
+<!--			#leaveInfo{-->
+
+<!--				margin: 60px 70px;-->
+<!--			}-->
+			#leaveInfo div .choose{
+				width: 180px;
+			}
+		</style>
+	<script>
+			var ff = $("leaveInfo");
+			$(function(){
+				$("#endDate").datebox({
+					onSelect:function(date){
+						var startDate = $('#startDate').datebox('getValue');
+						if(startDate){
+							var days = Math.ceil(1 + (new Date(date) - new Date(startDate))/3600/24000);
+							$("#days").textbox(
+								'setValue',days
+							)
+						}
+					}
+				});
+				$("#startDate").datebox({
+					onSelect:function(date){
+						var endDate = $('#endDate').datebox('getValue');
+						if(endDate){
+							var days = Math.ceil((new Date(endDate) - new Date(date))/3600/24000);
+							$("#days").textbox(
+								'setValue',days
+							)
+						}
+					}
+				});
+				$('#choose').bind('click', chooseDialog);
+				$('#ids').hide();
+			});
+
+			function submitForm(){
+				var ff = $("#leaveInfo");
+				var days =  $("#days").textbox('getValue');
+				console.info(days);
+				// console.info(ff.Serializer);
+				if (days < 1){
+					$.messager.alert('消息','请假日期选择有误，请重新选择','warning')
+				}else{
+					if(ff.form('validate')){
+						console.info(ff.serialize());
+						$.post("wfe/changeWithdrewLeaveInfo",
+						ff.serialize()).success(function(data){
+							if (data.success){
+								$.messager.show({
+									title:'提示',
+									msg:'修改成功',
+									timeout:4000
+								});
+								$("#createDialog").dialog('close');
+								$('#center').panel('refresh','maintenanceLeave');
+							}else{
+								var msg = data.msg;
+								$.messager.alert('提示',msg,'warning');
+							}
+						});
+					}
+				}
+
+			}
+			function clearForm(){
+				$('#leaveInfo').form('clear');
+			}
+
+			function chooseDialog(){
+				//动态创建一个窗口，一会还要销毁
+				var dialog = $("<div/>").dialog({
+					title:'选择课程',
+					href:'/gg',
+					width:400,
+					height:500,
+					onClose:function(){
+						$(this).dialog("destroy");
+					},
+					buttons:[
+					{
+					text:'确定',
+					handler:function(){
+						var dl = $("#dl");
+						var data = dl.datalist('getSelections');
+						var values = "";
+						var teaId = "";
+						data.forEach(function(value){
+							console.info(value.course);
+							values = values.concat(value.course," - ",value.name,"\r\n");
+							console.info(values);
+							teaId = teaId.concat(value.id,"|");
+						});
+						console.info(teaId);
+						$("#courseTeacher").textbox('setValue',values);
+						$("#ids").textbox('setValue',teaId);
+						dialog.dialog('close');
+					}
+					}
+					]
+				});
+			}
+
+		</script>
+
+		<div style="margin-left: 2%; margin-top: 3%;">
+			<form id="leaveInfo" method="post">
+				<div>
+					<label for="startDate">开始日期:</label>
+					<input id="startDate" class="easyui-datebox startdate" type="text" name="startDate" data-options="required:true,editable:false" />
+				</div>
+				<div>
+					<label for="endDate">结束日期:</label>
+					<input id="endDate" class="easyui-datebox enddate" type="text" name="endDate" data-options="required:true,editable:false" />
+				</div>
+				<div>
+					<label for="days">请假天数:</label>
+					<input id="days" class="easyui-textbox days" type="text" name="days" data-options="value:0,editable:false" />
+				</div>
+				<div>
+					<label for="script">请假原因:</label>
+					<input id="script" class="easyui-textbox script" type="text" name="description" style="width: 400px; height: 100px;"
+						   data-options="required:true,multiline:true">
+				</div>
+				<div>
+					<label for="choose">选择影响的课程:</label>
+					<a id="choose" class="easyui-linkbutton choose" type="button" name="choose" data-options="iconCls:'icon-search'" >选择</a>
+				</div>
+				<div>
+					<label for="courseTeacher">涉及课程及老师:</label>
+					<input id="courseTeacher" class="easyui-textbox courseTeacher" type="text" name="courseTeacher" style="width: 400px; height: 100px;"
+						   data-options="required:true,multiline:true,editable:false" />
+				</div>
+				<div style="display:none">
+
+					<input id="ids" class="easyui-textbox" name="ids" style="" editable="false" />
+				</div>
+				<div style="display:none">
+
+					<input id="processInstId" class="easyui-textbox" name="processInstId" style="" editable="false"/>
+				</div>
+				<div style="padding:5px 0;text-align: center;">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">申请</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">清空</a>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

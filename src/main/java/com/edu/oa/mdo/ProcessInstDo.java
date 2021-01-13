@@ -110,4 +110,8 @@ public class ProcessInstDo extends BaseDo{
             throw new RuntimeException("流程实例id为空！");
         return (ProcessInstDo)getObjectByParam("ProcessInstDo.queryProcessInstDoByProcessInstId", this);
     }
+
+    public int deleteProcessInstByProcessInstId() {
+        return delete("ProcessInstDo.deleteProcessInstByProcessInstId", this);
+    }
 }

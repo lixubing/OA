@@ -39,6 +39,9 @@
             <if test="canRetreat != null and canRetreat != ''">
                 and can_retreat = #{canRetreat}
             </if>
+            <if test="withdrew != null and withdrew != ''">
+                and withdrew = #{withdrew}
+            </if>
         </where>
     </delete>
     <select id="getTodoList" resultType="com.edu.oa.mdo.TodoAvyInfoDo">

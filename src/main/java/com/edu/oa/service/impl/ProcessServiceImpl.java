@@ -1,6 +1,8 @@
 package com.edu.oa.service.impl;
 
 import com.edu.oa.mdo.*;
+import com.edu.oa.service.IDealProcess;
+import com.edu.oa.service.IDealProcessService;
 import com.edu.oa.service.IProcessService;
 import com.edu.oa.service.IStartProcessService;
 import com.edu.oa.util.CommonInfo;
@@ -9,6 +11,8 @@ import com.edu.oa.util.Constant;
 import com.edu.oa.util.SwapAreaUtils;
 import com.edu.oa.vo.RefuseLeaveVo;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +25,11 @@ import java.util.List;
 @Service
 public class ProcessServiceImpl implements IProcessService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ProcessServiceImpl.class);
     @Resource
     private IStartProcessService startProcessService;
+    @Resource
+    private IDealProcessService dealProcessService;
 
 
     /**
@@ -71,7 +78,7 @@ public class ProcessServiceImpl implements IProcessService {
 
     /**
      * 获取下一级流程执行人id
-     * @param avyId 流程节点ID
+     * @param avyId 流程节点ID(要生成待办的执行人所在节点)
      * @return
      */
     public List<String> getNextExecutorList(String avyId){
@@ -85,6 +92,12 @@ public class ProcessServiceImpl implements IProcessService {
                 String executorId = info.getExecutorId();
                 //获取制单员
                 String userId = SwapAreaUtils.getCommonInfo().getFirstUser();
+                if (StringUtils.isBlank(userId)){
+                    userId = SwapAreaUtils.getCommonInfo().getProcessInstDo().getOwnerId();
+                    LOG.info("制单员 = " + userId);
+                    LOG.info("+++ = " + SwapAreaUtils.getCommonInfo().getProcessInstDo());
+                    SwapAreaUtils.getCommonInfo().setFirstUser(userId);
+                }
                 System.out.println("制单员=" + userId);
                 //班级ID
                 String clazzNo = userId.substring(0, 10);
@@ -261,6 +274,64 @@ public class ProcessServiceImpl implements IProcessService {
         processInstDo.setProcessTpcd(Constant.processTPCD_11);
         processInstDo.updateProcessInstByProcessInstId();
 
+    }
+
+    /**
+     * 申请维护-修改
+     * @param leaveInfoDo
+     */
+    @Override
+    public void changeWithdrewLeaveInfo(LeaveInfoDo leaveInfoDo) {
+        //1.重新匹配模板
+        String tplNo = startProcessService.getTplNo(leaveInfoDo);
+        TemplateInfo templateInfo = SwapAreaUtils.getCommonInfo().getTemplateInfo();
+        //2.根据流程实例编号更改biz_info业务表的数据
+        leaveInfoDo.setTplNo(tplNo);
+        leaveInfoDo.updateByProcessInstId();
+        //3.生成下一步执行人的待办,生成当前执行人的可收回待办
+        ProcessInstDo processInst = dealProcessService.getProcessInst(leaveInfoDo.getProcessInstId());
+
+        String avyId = processInst.getAvyId();
+        int i = Integer.parseInt(avyId) + 1;
+        List<String> executorList = getNextExecutorList(Integer.toString(i));
+        LOG.info("下一步执行人 = " + executorList);
+        makeTodoAvy(executorList, processInst);
+        //删除当前执行人的已收回待办
+        TodoAvyInfoDo todoAvyInfoDo = new TodoAvyInfoDo();
+        todoAvyInfoDo.setProcessInstId(leaveInfoDo.getProcessInstId());
+        todoAvyInfoDo.setWithdrew(Constant.NUM_1);
+        todoAvyInfoDo.deleteTodoAvyInf();
+        //4.生成当前执行人的历史数据
+        makeHistAvy(processInst);
+        //5.根据流程实例编号更改process_info的数据，更改流程状态为10-运行中
+        ProcessInstDo processInstDo = new ProcessInstDo();
+        processInstDo.setProcessInstId(leaveInfoDo.getProcessInstId());
+        processInstDo = processInstDo.queryProcessInstDoByProcessInstId();
+        processInstDo.setProcessTpcd(Constant.processTPCD_10);
+        processInstDo.updateProcessInstByProcessInstId();
+    }
+
+    /**
+     * 申请维护-删除
+     * @param processInstId
+     */
+    @Override
+    public void deleteWithdrewLeaveInfo(String processInstId) {
+        //1.删除当前操作员的已回收待办
+        TodoAvyInfoDo todoAvyInfoDo = new TodoAvyInfoDo();
+        todoAvyInfoDo.setProcessInstId(processInstId);
+        todoAvyInfoDo.setWithdrew(Constant.NUM_1);
+        todoAvyInfoDo.deleteTodoAvyInf();
+        //2.删除流程实例
+        ProcessInstDo processInstDo = new ProcessInstDo();
+        processInstDo.setProcessInstId(processInstId);
+        processInstDo.deleteProcessInstByProcessInstId();
+        //3.删除业务信息
+        LeaveInfoDo leaveInfoDo = new LeaveInfoDo();
+        leaveInfoDo.setProcessInstId(processInstId);
+        leaveInfoDo.deleteLeaveInfoByProcessInstId();
+        //4.删除影响课程的数据
+        leaveInfoDo.deleteTeacherLeave();
     }
 
     /**

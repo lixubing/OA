@@ -1,5 +1,6 @@
 package com.edu.oa.service;
 
+import com.edu.oa.mdo.LeaveInfoDo;
 import com.edu.oa.mdo.ProcessInstDo;
 import com.edu.oa.mdo.TemplateInfo;
 import com.edu.oa.vo.RefuseLeaveVo;
@@ -46,4 +47,7 @@ public interface IProcessService {
     public void updateProcessInfo(ProcessInstDo processInst);
 
     void withdrawTodo(String processInstId);
+
+    void changeWithdrewLeaveInfo(LeaveInfoDo leaveInfoDo);
+    public void deleteWithdrewLeaveInfo(String processInstId);
 }

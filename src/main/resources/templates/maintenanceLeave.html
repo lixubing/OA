@@ -64,16 +64,11 @@
 								width: 50,
 								formatter: function(value,row,index){
 								        var processInstId = row.processInstId;
-                                       // alert(processInstId);
-								       // value = {row.processInstId:row};
 								        va[processInstId] = row;
 								        console.info(row);
-								        //var r = "<a href=' javascript:void (0);' onclick='getHistAvyInfo(   row   );'>收回</a>";
                                         return "<a href=' javascript:void (0);' onclick='changeWithdrew(" + "\"" + processInstId + "\"" + ");'>修改</a>"
                                         +
                                         " &nbsp <a href=' javascript:void (0);' onclick='deleteWithdrew(" + "\"" + processInstId + "\"" + ");'>删除</a>";
-                                        //return "<a href=' javascript:void (0);' onclick='getHistAvyInfo("  + row +  ");'>详情</a>";
-                                        //return r;
                                 }
 							}
 						]
@@ -88,52 +83,43 @@
                 //动态创建一个窗口，一会还要销毁
 				var dialog = $("<div id='createDialog'/>").dialog({
 					title:'请假信息',
-					href:'/leaveInfo',
+					href:'/withdrewLeaveInfo',
 					width:600,
 					height:580,
+					draggable:true,
 					onClose:function(){
 						$(this).dialog("destroy");
+						//$('#center').panel('refresh','maintenanceLeave');
 					},
 					onLoad:function(){
 					    console.info($("#leaveInfo"));
 						$("#leaveInfo").form('load',result);
 					}
-					//,
-					//buttons:[
-					//{
-					//text:'确定',
-					//handler:function(){
-					//	var dl = $("#dl");
-					//	var data = dl.datalist('getSelections');
-
-					//	console.info(teaId);
-					//	dialog.dialog('close');
-				//	}
-				//	}
-				//	]
 				});
-
-
             }
-            function deleteWithdrew(processInstId){
 
-                $.post(
-                    "/wfe/deleteWithdrew",
-                    {'processInstId':processInstId},
-                    function(data){
-                        if(data.success){
-                            $.messager.show({
-                                        title:'提示',
-                                        msg:'收回成功',
-                                        timeout:4000
-                                    });
-                            $('#center').panel('refresh','myCanWithdrawLeave');
-                        }else{
-                            var msg = data.msg;
-                            $.messager.alert('提示',msg,'warning');
-                        }
+            function deleteWithdrew(processInstId){
+                $.messager.confirm('确认对话框', '您想要删除该条申请吗？', function(r){
+                    if (r){
+                        $.post(
+                            "/wfe/deleteWithdrewLeave",
+                            {'processInstId':processInstId},
+                            function(data){
+                                if(data.success){
+                                    $.messager.show({
+                                                title:'提示',
+                                                msg:'删除成功',
+                                                timeout:3000
+                                            });
+                                    $('#center').panel('refresh','maintenanceLeave');
+                                }else{
+                                    var msg = data.msg;
+                                    $.messager.alert('提示',msg,'warning');
+                                }
+                            }
+                        );
                     }
-                );
+                });
             }
 
 		</script>

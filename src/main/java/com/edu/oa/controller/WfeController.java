@@ -74,9 +74,6 @@ public class WfeController {
     @ResponseBody
     public String chooseCourse(){
 
-//        return "{\"total\":28,\"rows\":[\n" +
-//                "{\"course\":\"高数\",\"name\":\"高斯\",\"id\":\"001001\"},\n" +
-//                "{\"course\":\"语文\",\"name\":\"朱自清\",\"id\":\"001002\"}]}";
         Map<String, List> courseAndTeacher = courseService.getCourseAndTeacher("202000100101");
         String result = JSONObject.toJSONString(courseAndTeacher);
         System.out.println(result);
@@ -97,28 +94,6 @@ public class WfeController {
 
         mv.addObject("name", "哈哈");
         return histService.getMyHistLeave(page, rows);
-//        return "{\"total\":20,\"rows\":[\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请成功\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"已销假\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请失败\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"},\n" +
-//                "\t{\"startDate\":\"2020-12-12\",\"endDate\":\"2020-12-13\",\"days\":\"3\",\"tpcd\":\"申请中\",\"desc\":\"<a href='chooseCourse.html'>详情</a>\"}\n" +
-//                "]}";
     }
 
     @RequestMapping("/findLeaveTodoList")
@@ -196,6 +171,40 @@ public class WfeController {
         JsonResult jsonResult = new JsonResult();
         try {
             processService.withdrawTodo(processInstId);
+        }catch (Exception e){
+            jsonResult.setSuccess(false);
+            jsonResult.setMsg(e.getMessage());
+        }
+        return jsonResult;
+    }
+
+    /**
+     * 申请维护-修改
+     * @return
+     */
+    @RequestMapping("/changeWithdrewLeaveInfo")
+    @ResponseBody
+    public JsonResult changeWithdrewLeaveInfo(LeaveInfoDo leaveInfoDo){
+        JsonResult jsonResult = new JsonResult();
+        try {
+            processService.changeWithdrewLeaveInfo(leaveInfoDo);
+        }catch (Exception e){
+            e.printStackTrace();
+            jsonResult.setSuccess(false);
+            jsonResult.setMsg(e.getMessage());
+        }
+        return jsonResult;
+    }
+    /**
+     * 申请维护-修改
+     * @return
+     */
+    @RequestMapping("/deleteWithdrewLeave")
+    @ResponseBody
+    public JsonResult deleteWithdrewLeave(String processInstId){
+        JsonResult jsonResult = new JsonResult();
+        try {
+            processService.deleteWithdrewLeaveInfo(processInstId);
         }catch (Exception e){
             jsonResult.setSuccess(false);
             jsonResult.setMsg(e.getMessage());

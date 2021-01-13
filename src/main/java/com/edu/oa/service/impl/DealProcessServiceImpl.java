@@ -85,12 +85,11 @@ public class DealProcessServiceImpl implements IDealProcessService {
         ProcessInstDo processInstDo = commonInfo.getProcessInstDo();
         if (processInstDo == null){
             processInstDo = new ProcessInstDo();
-            System.out.println(processInstDo);
+            processInstDo.setProcessInstId(processInstId);
+            processInstDo = processInstDo.queryProcessInstDoByProcessInstId();
             SwapAreaUtils.getCommonInfo().setProcessInstDo(processInstDo);
+            System.out.println(SwapAreaUtils.getCommonInfo().getProcessInstDo());
         }
-        processInstDo.setProcessInstId(processInstId);
-        processInstDo = processInstDo.queryProcessInstDoByProcessInstId();
-
         return processInstDo;
     }
 }

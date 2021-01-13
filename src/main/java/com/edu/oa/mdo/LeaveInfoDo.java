@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @EntityScan
@@ -229,5 +230,18 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
      */
     public List<LeaveInfoDo> queryCourseByProcessInstId() {
         return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryCourseByProcessInstId", this);
+    }
+
+    /**
+     * 根据流程实例编号更新数据
+     * @return
+     */
+    public int updateByProcessInstId() {
+        this.setTms(new Date());
+        return update("LeaveInfoDo.updateByProcessInstId", this);
+    }
+
+    public int deleteLeaveInfoByProcessInstId() {
+        return delete("LeaveInfoDo.deleteLeaveInfoByProcessInstId", this);
     }
 }

@@ -54,4 +54,7 @@
         from process_info
         where process_inst_id = #{processInstId}
     </select>
+    <delete id="deleteProcessInstByProcessInstId" parameterType="com.edu.oa.mdo.ProcessInstDo">
+        delete from process_info where process_inst_id = #{processInstId}
+    </delete>
 </mapper>

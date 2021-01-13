@@ -102,6 +102,7 @@ public class LoginController {
      */
     @RequestMapping("/maintenanceLeave")
     public String maintenanceLeave(){
+        System.out.println("申请维护页面");
         return "maintenanceLeave";
     }
     /**
@@ -111,6 +112,14 @@ public class LoginController {
     @RequestMapping("/leaveInfo")
     public String leaveInfo(){
         return "leaveInfo";
+    }
+    /**
+     * 申请维护-修改-详情
+     * @return
+     */
+    @RequestMapping("/withdrewLeaveInfo")
+    public String withdrewLeaveInfo(){
+        return "withdrewLeaveInfo";
     }
 
 }

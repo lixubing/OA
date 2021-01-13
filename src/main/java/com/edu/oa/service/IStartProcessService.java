@@ -12,4 +12,5 @@ public interface IStartProcessService {
      * @return
      */
     public TemplateInfo getTemplateInfo(String tplNo);
+    public String getTplNo(LeaveInfoDo leaveInfoDo);
 }
