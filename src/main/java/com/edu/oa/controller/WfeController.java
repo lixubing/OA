@@ -211,4 +211,17 @@ public class WfeController {
         }
         return jsonResult;
     }
+
+    /**
+     * 根据老师id查询学生的请假情况
+     * @param condition 查询条件
+     * @param page 当前页
+     * @param rows 每页条数
+     * @return
+     */
+    @RequestMapping("/findStudentLeaveByTeacher")
+    @ResponseBody
+    public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows){
+        return null;
+    }
 }

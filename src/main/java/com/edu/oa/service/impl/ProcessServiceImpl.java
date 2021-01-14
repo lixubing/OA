@@ -9,6 +9,7 @@ import com.edu.oa.util.CommonInfo;
 import com.edu.oa.util.CommonUtils;
 import com.edu.oa.util.Constant;
 import com.edu.oa.util.SwapAreaUtils;
+import com.edu.oa.vo.HistAvyVo;
 import com.edu.oa.vo.RefuseLeaveVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -369,6 +370,31 @@ public class ProcessServiceImpl implements IProcessService {
         if (null != users && users.size() > 0){
             return users.get(0).getUserId();
         }
+        return null;
+    }
+
+    /**
+     * 根据老师id查询学生的请假情况
+     * @param condition 查询条件 0-查询所有，1-查询未开始的请假，2-查询正在进行的请假，3-查询已经结束的请假
+     * @param page
+     * @param rows
+     * @return
+     */
+    public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows){
+        //1.根据用户id查询teacher_leave中间表，找到流程实例id
+        String teacherNo = SwapAreaUtils.getCommonInfo().getCurrentUserId();
+        LeaveInfoDo leaveInfoDo = new LeaveInfoDo();
+        leaveInfoDo.setTeacherNo(teacherNo);
+        leaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndCondition();
+        String[] con = condition.split(",");
+        for (String s : con) {
+            if (s.equals("0")) {
+                //查询所有
+
+                break;
+            }
+        }
+        //2.根据流程实例查询请假信息，只查询申请成功的
         return null;
     }
 }

@@ -14,24 +14,36 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
     private String classNo;
     private String userId;
     private String username;
-    /**申请的日期*/
+    /**
+     * 申请的日期
+     */
     private String applyDate;
     private String startDate;
     private String endDate;
     private String days;
     private String description;
     private String functionId;
-    /**课程*/
+    /**
+     * 课程
+     */
     private String courseName;
     private String courseNo;
-    /**老师*/
+    /**
+     * 老师
+     */
     private String teacherName;
-    /**请假涉及的老师的id*/
+    /**
+     * 请假涉及的老师的id
+     */
     private String ids;
-    /**查询用*/
+    /**
+     * 查询用
+     */
     private List<String> processInstIdList;
     private String teacherNo;
-    /**流程状态*/
+    /**
+     * 流程状态
+     */
     private String processTpcd;
 
     public String getCourseNo() {
@@ -178,16 +190,16 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
         this.description = description;
     }
 
-    public int save(){
+    public int save() {
         if (StringUtils.isNotBlank(this.getIds())) {
             String[] split = this.getIds().split("\\|");
             String courseName = "";
             String teacherName = "";
             for (String id : split) {
-               this.setTeacherNo(id);
-               //查询课程名称
+                this.setTeacherNo(id);
+                //查询课程名称
                 LeaveInfoDo course = (LeaveInfoDo) getObjectByParam("LeaveInfoDo.getCourseByTeacherNo", this);
-                if (course != null){
+                if (course != null) {
                     courseName = courseName.concat(course.getCourseName());
                     courseName = courseName.concat(",");
                     teacherName = teacherName.concat(course.getTeacherName());
@@ -207,12 +219,14 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
 
     /**
      * 查询请假的待办
+     *
      * @return
      */
-    public List<LeaveInfoDo> queryTodoListByProcessInstId(){
-       return (List<LeaveInfoDo>)getListByParam("LeaveInfoDo.queryTodoListByProcessInstId", this);
+    public List<LeaveInfoDo> queryTodoListByProcessInstId() {
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTodoListByProcessInstId", this);
     }
-    public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNo(){
+
+    public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNo() {
         return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTeacherLeaveInfoByTeacherNo", this);
     }
 
@@ -220,12 +234,13 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
         return delete("LeaveInfoDo.deleteTeacherLeave", this);
     }
 
-    public List<LeaveInfoDo> queryRefuseList(){
+    public List<LeaveInfoDo> queryRefuseList() {
         return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryRefuseList", this);
     }
 
     /**
      * 根据流程实例编号查询影响课程
+     *
      * @return
      */
     public List<LeaveInfoDo> queryCourseByProcessInstId() {
@@ -234,6 +249,7 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
 
     /**
      * 根据流程实例编号更新数据
+     *
      * @return
      */
     public int updateByProcessInstId() {
@@ -243,5 +259,29 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
 
     public int deleteLeaveInfoByProcessInstId() {
         return delete("LeaveInfoDo.deleteLeaveInfoByProcessInstId", this);
+    }
+
+    /**
+     * 查询尚未开始休假
+     * @return
+     */
+    public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNoAndConditionBfr() {
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndConditionBfr", this);
+    }
+
+    /**
+     * 查询正在休假
+     * @return
+     */
+    public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNoAndConditionCurr() {
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndConditionCurr", this);
+    }
+
+    /**
+     * 查询结束休假
+     * @return
+     */
+    public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNoAndConditionAft() {
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndConditionAft", this);
     }
 }

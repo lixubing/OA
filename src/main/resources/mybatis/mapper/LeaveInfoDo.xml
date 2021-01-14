@@ -121,4 +121,18 @@
     <delete id="deleteLeaveInfoByProcessInstId" parameterType="com.edu.oa.mdo.LeaveInfoDo">
         delete from biz_info where process_inst_id = #{processInstId}
     </delete>
+    <select id="queryTeacherLeaveInfoByTeacherNoAndConditionBfr" parameterType="com.edu.oa.mdo.LeaveInfoDo">
+        select b.owner as username,
+        b.owner_id as userId,
+        b.start_date as startDate,
+        b.end_date as endDate,
+        b.days
+        from biz_info b, teacher_leave t, process_info p
+        where b.process_inst_id = t.process_inst_id
+        and b.process_inst_id = p.process_inst_id
+        and t.teacher_no = #{teacherNo}
+        and p.process_tpcd = '12'
+        and b.start_date &lt; #{startDate}
+        and
+    </select>
 </mapper>
