@@ -49,6 +49,8 @@ public class WfeController {
     public User initUser(){
         User user = new User();
         user.setUserId("202000100101");
+        user = user.queryUserByUserId();
+        LOG.info("controller前置=" + user.getUserId());
         SwapAreaUtils.getCommonInfo().setUser(user);
         return user;
     }
@@ -222,6 +224,7 @@ public class WfeController {
     @RequestMapping("/findStudentLeaveByTeacher")
     @ResponseBody
     public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows){
-        return null;
+
+        return processService.findStudentLeaveByTeacher(condition, page, rows);
     }
 }

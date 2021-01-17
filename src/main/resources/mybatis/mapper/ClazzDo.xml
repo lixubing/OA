@@ -6,6 +6,7 @@
     <select id="findClazzById" resultType="com.edu.oa.mdo.ClazzDo">
         select
             class_no as classNo,
+            class_name as className,
             major_no as majorNo,
             major_name as majorName,
             academy_no as academyNo,
@@ -15,6 +16,6 @@
             monitor_no as monitorNo,
             monitor_name as monitorName
         from class where
-            class_no = #{classNo}
+        class_no = #{classNo}
     </select>
 </mapper>

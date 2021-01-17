@@ -23,5 +23,10 @@ public class Constant {
     public static final String processTPCD_12 = "12";
     /**14-已拒绝*/
     public static final String processTPCD_14 = "14";
+    public static final String NUM_0 = "0";
     public static final String NUM_1 = "1";
+    public static final String NUM_2 = "2";
+    public static final String NUM_3 = "3";
+    public static final String NUM_4 = "4";
+    public static final String NUM_5 = "5";
 }

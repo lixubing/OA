@@ -1,24 +1,57 @@
 package com.edu.oa.mdo;
-/**班级*/
-public class ClazzDo extends BaseDo{
-    /**班级id*/
+
+/**
+ * 班级
+ */
+public class ClazzDo extends BaseDo {
+    /**
+     * 班级id
+     */
     private String classNo;
-    /**班级的专业ID*/
+    /**
+     * 班级id
+     */
+    private String className;
+    /**
+     * 班级的专业ID
+     */
     private String majorNo;
-    /**专业名称*/
+    /**
+     * 专业名称
+     */
     private String majorName;
-    /**学院ID*/
+    /**
+     * 学院ID
+     */
     private String academyNo;
-    /**学院名称*/
+    /**
+     * 学院名称
+     */
     private String academyName;
-    /**辅导员ID*/
+    /**
+     * 辅导员ID
+     */
     private String counselorNo;
-    /**辅导员姓名*/
+    /**
+     * 辅导员姓名
+     */
     private String counselorName;
-    /**班长ID*/
+    /**
+     * 班长ID
+     */
     private String monitorNo;
-    /**班长姓名*/
+    /**
+     * 班长姓名
+     */
     private String monitorName;
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
     public String getClassNo() {
         return classNo;
@@ -94,9 +127,10 @@ public class ClazzDo extends BaseDo{
 
     /**
      * 根据班级ID查找班级信息
+     *
      * @return
      */
-    public ClazzDo findClazzById(){
+    public ClazzDo findClazzById() {
         ClazzDo clazz = (ClazzDo) getObjectByParam("ClazzDo.findClazzById", this);
         return clazz;
     }

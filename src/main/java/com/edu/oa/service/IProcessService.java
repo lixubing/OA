@@ -3,6 +3,7 @@ package com.edu.oa.service;
 import com.edu.oa.mdo.LeaveInfoDo;
 import com.edu.oa.mdo.ProcessInstDo;
 import com.edu.oa.mdo.TemplateInfo;
+import com.edu.oa.vo.HistAvyVo;
 import com.edu.oa.vo.RefuseLeaveVo;
 
 import java.util.List;
@@ -50,4 +51,5 @@ public interface IProcessService {
 
     void changeWithdrewLeaveInfo(LeaveInfoDo leaveInfoDo);
     public void deleteWithdrewLeaveInfo(String processInstId);
+    public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows);
 }

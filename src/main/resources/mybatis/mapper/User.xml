@@ -10,7 +10,7 @@
             tel as tel,
             email as email,
             address as address,
-            class_no as classNo,
+            class_no as clazzNo,
             major_no as majorNo,
             academy_no as academyNo,
             executor_id as executorId
@@ -21,6 +21,34 @@
             </if>
             <if test="executorId != null and executorId != ''">
                 and executor_id = #{executorId}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+    <select id="queryUserByUserId" resultType="com.edu.oa.mdo.User">
+        select username as username,
+            user_id as userId,
+            password as password,
+            age as age,
+            tel as tel,
+            email as email,
+            address as address,
+            class_no as clazzNo,
+            major_no as majorNo,
+            academy_no as academyNo,
+            executor_id as executorId
+        from user
+        <where>
+            <if test="academyNo != null and academy != ''">
+                and academy_no = #{academyNo}
+            </if>
+            <if test="executorId != null and executorId != ''">
+                and executor_id = #{executorId}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
             </if>
         </where>
     </select>

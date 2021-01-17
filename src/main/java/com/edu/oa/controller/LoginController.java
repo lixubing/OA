@@ -121,5 +121,13 @@ public class LoginController {
     public String withdrewLeaveInfo(){
         return "withdrewLeaveInfo";
     }
+    /**
+     * 老师查询本课程的请假情况
+     * @return
+     */
+    @RequestMapping("/teacherLeave")
+    public String teacherLeave(){
+        return "teacherLeave";
+    }
 
 }

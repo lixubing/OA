@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,31 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
      * 流程状态
      */
     private String processTpcd;
+
+    /**
+     * 请假状态
+     * bfr 未开始
+     * curr 正在休假
+     * aft 结束休假
+     */
+    private List<String> leaveStatus;
+    private String today;
+
+    public String getToday() {
+        return today;
+    }
+
+    public void setToday(String today) {
+        this.today = today;
+    }
+
+    public List<String> getLeaveStatus() {
+        return leaveStatus;
+    }
+
+    public void setLeaveStatus(List<String> leaveStatus) {
+        this.leaveStatus = leaveStatus;
+    }
 
     public String getCourseNo() {
         return courseNo;
@@ -191,6 +217,9 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
     }
 
     public int save() {
+        this.setTms(new Date());
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        this.setApplyDate(format.format(new Date()));
         if (StringUtils.isNotBlank(this.getIds())) {
             String[] split = this.getIds().split("\\|");
             String courseName = "";
@@ -283,5 +312,19 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
      */
     public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNoAndConditionAft() {
         return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndConditionAft", this);
+    }
+    /**
+     * 查询所有状态
+     * @return
+     */
+    public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNoAndConditionAll() {
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndConditionAll", this);
+    }
+    /**
+     * 查询所有状态
+     * @return
+     */
+    public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNoAndCondition() {
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndCondition", this);
     }
 }

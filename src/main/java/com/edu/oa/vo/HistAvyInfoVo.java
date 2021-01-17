@@ -17,8 +17,37 @@ public class HistAvyInfoVo {
     private String processInstId;
     private String course;
 
+    /**请假人信息*/
+    private String majorName;
+    private String academyName;
+    private String className;
+
     /**流程历史执行信息*/
     private List<HistAvyInfoSubVo> subVoList;
+
+    public String getMajorName() {
+        return majorName;
+    }
+
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
+    }
+
+    public String getAcademyName() {
+        return academyName;
+    }
+
+    public void setAcademyName(String academyName) {
+        this.academyName = academyName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
     public String getCourse() {
         return course;

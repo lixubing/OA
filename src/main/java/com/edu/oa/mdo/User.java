@@ -107,7 +107,11 @@ public class User extends BaseDo{
         this.academyNo = academyNo;
     }
     public List<User> getUser(){
-        List<User> users = (List<User>) getListByParam("User-getUser", this);
+        List<User> users = (List<User>) getListByParam("User.getUser", this);
         return users;
+    }
+    public User queryUserByUserId(){
+        User user = (User) getObjectByParam("User.queryUserByUserId", this);
+        return user;
     }
 }

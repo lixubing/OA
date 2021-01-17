@@ -5,52 +5,52 @@
 <mapper namespace="LeaveInfoDo">
     <insert id="save" parameterType="com.edu.oa.mdo.LeaveInfoDo">
         insert into biz_info (
-            process_inst_id,
-            owner,
-            owner_id,
-            tpl_no,
-            class_no,
-            tms,
-            function_id,
-            apply_date,
-            start_date,
-            end_date,
-            days,
-            description,
-            course_name,
-            teacher_name,
-            ids)
+        process_inst_id,
+        owner,
+        owner_id,
+        tpl_no,
+        class_no,
+        tms,
+        function_id,
+        apply_date,
+        start_date,
+        end_date,
+        days,
+        description,
+        course_name,
+        teacher_name,
+        ids)
         values(
-            #{processInstId},
-            #{username},
-            #{userId},
-            #{tplNo},
-            #{classNo},
-            #{tms},
-            #{functionId},
-            #{applyDate},
-            #{startDate},
-            #{endDate},
-            #{days},
-            #{description},
-            #{courseName},
-            #{teacherName},
-            #{ids}
+        #{processInstId},
+        #{username},
+        #{userId},
+        #{tplNo},
+        #{classNo},
+        #{tms},
+        #{functionId},
+        #{applyDate},
+        #{startDate},
+        #{endDate},
+        #{days},
+        #{description},
+        #{courseName},
+        #{teacherName},
+        #{ids}
         )
     </insert>
     <insert id="saveTeacherLeave" parameterType="com.edu.oa.mdo.LeaveInfoDo">
         insert into teacher_leave (
-            teacher_no,
-            process_inst_id,
-            teacher_name,
-            course_no,
-            course_name)
+        teacher_no,
+        process_inst_id,
+        teacher_name,
+        course_no,
+        course_name)
         values (
-            #{teacherNo},
-            #{processInstId},
-            #{teacherName},
-            #{courseNo},
-            #{courseName}
+        #{teacherNo},
+        #{processInstId},
+        #{teacherName},
+        #{courseNo},
+        #{courseName}
         )
     </insert>
     <select id="queryTodoListByProcessInstId" resultType="com.edu.oa.mdo.LeaveInfoDo">
@@ -69,60 +69,61 @@
     </select>
     <select id="queryTeacherLeaveInfoByTeacherNo" resultType="com.edu.oa.mdo.LeaveInfoDo">
         select
-            b.start_date as startDate,
-            b.end_date as endDate,
-            b.owner as username,
-            p.process_tpcd as processTpcd
+        b.start_date as startDate,
+        b.end_date as endDate,
+        b.owner as username,
+        p.process_tpcd as processTpcd
         from biz_info b,teacher_leave t,process_info p
         where t.process_inst_id = b.process_inst_id
-            and t.process_inst_id = p.process_inst_id
-            and t.teacher_no = #{teacherNo}
+        and t.process_inst_id = p.process_inst_id
+        and t.teacher_no = #{teacherNo}
     </select>
     <select id="queryTeacherLeaveInfoByTeacherNo_COUNT" resultType="com.edu.oa.mdo.LeaveInfoDo">
         select count(1)
         from biz_info b,teacher_leave t,process_info p
         where t.process_inst_id = b.process_inst_id
-            and t.process_inst_id = p.process_inst_id
-            and t.teacher_no = #{teacherNo}
+        and t.process_inst_id = p.process_inst_id
+        and t.teacher_no = #{teacherNo}
     </select>
     <delete id="deleteTeacherLeave" parameterType="com.edu.oa.mdo.LeaveInfoDo">
         delete from teacher_leave where process_inst_id = #{processInstId}
     </delete>
     <select id="queryRefuseList" resultType="com.edu.oa.mdo.LeaveInfoDo">
-        select  b.process_inst_id as processInstId,
-                b.start_date as startDate,
-                b.end_date as endDate,
-                b.days,
-                p.process_tpcd as processTpcd
+        select b.process_inst_id as processInstId,
+        b.start_date as startDate,
+        b.end_date as endDate,
+        b.days,
+        p.process_tpcd as processTpcd
         from biz_info b,process_info p
-        where   b.process_inst_id = p.process_inst_id
-                and p.process_tpcd = #{processTpcd}
-                and b.owner = #{userId}
-                and b.start_date > #{startDate}
+        where b.process_inst_id = p.process_inst_id
+        and p.process_tpcd = #{processTpcd}
+        and b.owner = #{userId}
+        and b.start_date > #{startDate}
     </select>
     <select id="queryCourseByProcessInstId" resultType="com.edu.oa.mdo.LeaveInfoDo">
         select course_name as courseName,
-                teacher_name as teacherName
+        teacher_name as teacherName
         from teacher_leave where process_inst_id = #{processInstId}
     </select>
     <select id="getCourseByTeacherNo" resultType="com.edu.oa.mdo.LeaveInfoDo">
         select teacher_no as teacherNo,
-            teacher_name as teacherName,
-            course_no as courseNo,
-            course_name as courseName
+        teacher_name as teacherName,
+        course_no as courseNo,
+        course_name as courseName
         from teacher_course where teacher_no = #{teacherNo}
     </select>
     <update id="updateByProcessInstId" parameterType="com.edu.oa.mdo.LeaveInfoDo">
         update biz_info set
-                tpl_no = #{tplNo},
-                tms = #{tms}
+        tpl_no = #{tplNo},
+        tms = #{tms}
         where process_inst_id = #{processInstId}
     </update>
     <delete id="deleteLeaveInfoByProcessInstId" parameterType="com.edu.oa.mdo.LeaveInfoDo">
         delete from biz_info where process_inst_id = #{processInstId}
     </delete>
-    <select id="queryTeacherLeaveInfoByTeacherNoAndConditionBfr" parameterType="com.edu.oa.mdo.LeaveInfoDo">
+    <select id="queryTeacherLeaveInfoByTeacherNoAndConditionAll" resultType="com.edu.oa.mdo.LeaveInfoDo">
         select b.owner as username,
+        b.class_no as classNo,
         b.owner_id as userId,
         b.start_date as startDate,
         b.end_date as endDate,
@@ -132,7 +133,58 @@
         and b.process_inst_id = p.process_inst_id
         and t.teacher_no = #{teacherNo}
         and p.process_tpcd = '12'
-        and b.start_date &lt; #{startDate}
-        and
+    </select>
+    <select id="queryTeacherLeaveInfoByTeacherNoAndConditionAll_COUNT" resultType="java.lang.Integer">
+        select count(1)
+        from biz_info b, teacher_leave t, process_info p
+        where b.process_inst_id = t.process_inst_id
+        and b.process_inst_id = p.process_inst_id
+        and t.teacher_no = #{teacherNo}
+        and p.process_tpcd = '12'
+    </select>
+    <select id="queryTeacherLeaveInfoByTeacherNoAndCondition" resultType="com.edu.oa.mdo.LeaveInfoDo">
+        select b.owner as username,
+        b.class_no as classNo,
+        b.owner_id as userId,
+        b.start_date as startDate,
+        b.end_date as endDate,
+        b.days
+        from biz_info b, teacher_leave t, process_info p
+        where b.process_inst_id = t.process_inst_id
+        and b.process_inst_id = p.process_inst_id
+        and t.teacher_no = #{teacherNo}
+        and p.process_tpcd = '12'
+        <foreach collection="leaveStatus" item="status" separator="or" open="and ( " close=")">
+            <if test="status == 'bfr'">
+                b.start_date &lt; #{startDate}
+            </if>
+            <if test="status == 'curr'">
+                b.start_date &gt;= #{startDate}
+                and b.end_date &lt;= #{endDate}
+            </if>
+            <if test="status == 'aft'">
+                b.end_date &gt; #{endDate}
+            </if>
+        </foreach>
+    </select>
+    <select id="queryTeacherLeaveInfoByTeacherNoAndCondition_COUNT" resultType="java.lang.Integer">
+        select count(1)
+        from biz_info b, teacher_leave t, process_info p
+        where b.process_inst_id = t.process_inst_id
+        and b.process_inst_id = p.process_inst_id
+        and t.teacher_no = #{teacherNo}
+        and p.process_tpcd = '12'
+        <foreach collection="leaveStatus" item="status" separator="or" open="and ( " close=")">
+            <if test="status == 'bfr'">
+                 b.start_date &lt; #{startDate}
+            </if>
+            <if test="status == 'curr'">
+                 b.start_date &gt;= #{startDate}
+                and b.end_date &lt;= #{endDate}
+            </if>
+            <if test="status == 'aft'">
+                 b.end_date &gt; #{endDate}
+            </if>
+        </foreach>
     </select>
 </mapper>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+
+		<script type="text/javascript" src="easyui/jquery.min.js"></script>
+		<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+
+
+	</head>
+	<body>
+	<script>
+			var va={};
+			$(function() {
+
+				$('#dl').datagrid({
+					url: '/wfe/fidMyHistLeave',
+					method:'post',
+					striped: true,
+					rownumbers: true,
+					pagination: true,
+					fit: true,
+					fitColumns: true,
+					border: false,
+					columns: [
+						[{
+								field: 'owner',
+								title: '姓名',
+								width: 50
+							},{
+								field: 'startDate',
+								title: '开始日期',
+								width: 100
+							},{
+								field: 'endDate',
+								title: '结束日期',
+								width: 100
+							},{
+								field: 'days',
+								title: '请假天数',
+								width: 50
+							},{
+								field: 'tpcd',
+								title: '请假状态',
+								width: 50,
+								formatter: function(value,row,index){
+								        var tpcd = row.processTpcd;
+								        if (tpcd == 10){
+								            return '申请中';
+								        }else if (tpcd == 12){
+								            return '申请成功';
+								        }else if (tpcd == 14){
+								            return '已拒绝';
+								        }
+                                }
+							},{
+								field: 'academyName',
+								title: '学院',
+								width: 50
+							},{
+								field: 'majorName',
+								title: '专业',
+								width: 50
+							},{
+								field: 'classNo',
+								title: '班级',
+								width: 50
+							}
+						]
+					]
+				});
+			});
+
+
+
+		</script>
+		<div class="easyui-layout" fit="true">
+			<div data-options="region:'center',split:false,border:0" >
+				<div id="dl"></div>
+			</div>
+			<div  data-options="region:'north',split:false,border:0" class="datagrid-toolbar"  style="height:80px">
+				<form id="ff" style="margin:20px">
+					<table>
+						<tr>
+
+							<td width="150px"><input class="easyui-checkbox" name="fruit" value="Orange" label="未开始休假:"></td>
+							<td width="150px"><input class="easyui-checkbox" name="fruit" value="Banana" label="正在休假:" labelWidth="70px"></td>
+							<td width="150px"><input class="easyui-checkbox" name="fruit" value="Banana" label="已结束休假:" ></td>
+							<td width="150px"><input class="easyui-checkbox" name="fruit" value="Apple" label="全部:" labelWidth="40px"></td>
+							<td width="150px"><a class="easyui-linkbutton" href="#" onclick="choice()">筛选</a></td>
+						</tr>
+					</table>
+
+				</form>
+			</div>
+		</div>
+
+
+	</body>
+</html>

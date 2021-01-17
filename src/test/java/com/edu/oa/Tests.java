@@ -51,4 +51,11 @@ public class Tests {
         }
 
     }
+
+    @Test
+    public void test6() {
+        String s = "0,1,2";
+        System.out.println(s.contains("0"));
+
+    }
 }

@@ -22,7 +22,7 @@ public class StartProcessServiceImpl implements IStartProcessService {
         completeLeaveInfo(leaveInfoDo);
         //1.匹配流程模板
         String tplNo = getTplNo(leaveInfoDo);
-        System.out.println("tplNo = " + tplNo);
+        System.out.println("tplNo = " + tplNo + "functionId=" + leaveInfoDo.getFunctionId());
         //2.完善流程模板信息
         TemplateInfo templateInfo = getTemplateInfo(tplNo);
         System.out.println(templateInfo.getTplNo() + "|" + templateInfo.getFunctionId() + "|" + templateInfo.getConditionDesc() + "|" + templateInfo.getAvyInfoList());
@@ -58,8 +58,9 @@ public class StartProcessServiceImpl implements IStartProcessService {
     }
 
     private void completeLeaveInfo(LeaveInfoDo leaveInfoDo) {
-        User user = new User();
-        leaveInfoDo.setUsername("张三");
+        User user = SwapAreaUtils.getCommonInfo().getUser();
+        leaveInfoDo.setUsername(user.getUsername());
+        leaveInfoDo.setClassNo(user.getClazzNo());
     }
 
     /**根据条件查找流程模板*/
@@ -70,6 +71,7 @@ public class StartProcessServiceImpl implements IStartProcessService {
         String tplNo = null;
         TplMpngRuleDo ruleDo = new TplMpngRuleDo();
         ruleDo.setFunctionId("COMM_001");
+        leaveInfoDo.setFunctionId("COMM_001");
 
         List<TplMpngRuleDo> ruleList = ruleDo.getTplMpngRuleByFunctionId();
         System.out.println("查到的模板数 = " + ruleList.size());

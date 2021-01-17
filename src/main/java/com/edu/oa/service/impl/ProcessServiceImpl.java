@@ -9,6 +9,7 @@ import com.edu.oa.util.CommonInfo;
 import com.edu.oa.util.CommonUtils;
 import com.edu.oa.util.Constant;
 import com.edu.oa.util.SwapAreaUtils;
+import com.edu.oa.vo.HistAvyInfoVo;
 import com.edu.oa.vo.HistAvyVo;
 import com.edu.oa.vo.RefuseLeaveVo;
 import org.apache.commons.lang3.StringUtils;
@@ -36,9 +37,10 @@ public class ProcessServiceImpl implements IProcessService {
     /**
      * 创建流程实例ID
      * 格式为22位
+     *
      * @return processInstId
      */
-    public String getProcessInstId(){
+    public String getProcessInstId() {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         //日期17位
         String s = format.format(new Date());
@@ -46,15 +48,16 @@ public class ProcessServiceImpl implements IProcessService {
         String defaultSequence = "00000";
         String sequence = CommonUtils.nextSequence("process_inst_id");
 
-        defaultSequence = defaultSequence.substring(0 ,5 - sequence.length());
+        defaultSequence = defaultSequence.substring(0, 5 - sequence.length());
         StringBuilder sb = new StringBuilder();
         sb.append(s).append(defaultSequence).append(sequence);
         return sb.toString();
     }
-    public ProcessInstDo makeProcess(TemplateInfo templateInfo ){
+
+    public ProcessInstDo makeProcess(TemplateInfo templateInfo) {
         //ProcessInstDo processInstDo = new ProcessInstDo();
         ProcessInstDo processInstDo = SwapAreaUtils.getCommonInfo().getProcessInstDo();
-        if (processInstDo == null){
+        if (processInstDo == null) {
             processInstDo = new ProcessInstDo();
             System.out.println(processInstDo);
             SwapAreaUtils.getCommonInfo().setProcessInstDo(processInstDo);
@@ -79,21 +82,22 @@ public class ProcessServiceImpl implements IProcessService {
 
     /**
      * 获取下一级流程执行人id
+     *
      * @param avyId 流程节点ID(要生成待办的执行人所在节点)
      * @return
      */
-    public List<String> getNextExecutorList(String avyId){
+    public List<String> getNextExecutorList(String avyId) {
         CommonInfo commonInfo = SwapAreaUtils.getCommonInfo();
         TemplateInfo templateInfo = commonInfo.getTemplateInfo();
         List<TplAvyInfoDo> avyInfoList = templateInfo.getAvyInfoList();
         System.out.println("avyInfoList = " + avyInfoList);
         List<String> userIdList = new ArrayList<>();
         for (TplAvyInfoDo info : avyInfoList) {
-            if (info.getAvyId().equals(avyId)){
+            if (info.getAvyId().equals(avyId)) {
                 String executorId = info.getExecutorId();
                 //获取制单员
                 String userId = SwapAreaUtils.getCommonInfo().getFirstUser();
-                if (StringUtils.isBlank(userId)){
+                if (StringUtils.isBlank(userId)) {
                     userId = SwapAreaUtils.getCommonInfo().getProcessInstDo().getOwnerId();
                     LOG.info("制单员 = " + userId);
                     LOG.info("+++ = " + SwapAreaUtils.getCommonInfo().getProcessInstDo());
@@ -109,23 +113,23 @@ public class ProcessServiceImpl implements IProcessService {
                 ClazzDo clazzDo = new ClazzDo();
                 clazzDo.setClassNo(clazzNo);
                 clazzDo = clazzDo.findClazzById();
-                switch (executorId){
+                switch (executorId) {
                     case Constant._001:
                         userIdList.add(userId);
                         break;
-                    case Constant._002 :
+                    case Constant._002:
                         //班长
                         userIdList.add(clazzDo.getMonitorNo());
                         break;
-                    case Constant._003 :
+                    case Constant._003:
                         //辅导员
                         userIdList.add(clazzDo.getCounselorNo());
                         break;
-                    case Constant._004 :
+                    case Constant._004:
                         //院长
                         userIdList.add(getDean(clazzDo.getAcademyNo()));
                         break;
-                    case Constant._005 :
+                    case Constant._005:
                         //主任
                         userIdList.add(getChairman());
                         break;
@@ -141,10 +145,11 @@ public class ProcessServiceImpl implements IProcessService {
      * 为下一步执行人生成待办，
      * 为当前执行人生成可收回待办
      * 删除当前执行人的待办信息
+     *
      * @param executorList 下一步执行人列表
-     * @param processInst 流程执行信息
+     * @param processInst  流程执行信息
      */
-    public void makeTodoAvy(List<String> executorList, ProcessInstDo processInst){
+    public void makeTodoAvy(List<String> executorList, ProcessInstDo processInst) {
         //为下一步执行人生成可退回的待办
         for (String userId : executorList) {
             TodoAvyInfoDo todoDo = new TodoAvyInfoDo();
@@ -162,23 +167,24 @@ public class ProcessServiceImpl implements IProcessService {
         if (executorId.length() == 3) {
             executorId = SwapAreaUtils.getCommonInfo().getFirstUser();
         }
-            TodoAvyInfoDo todoDo = new TodoAvyInfoDo();
-            BeanUtils.copyProperties(processInst, todoDo);
-            String avyId = processInst.getAvyId();
-            int i = Integer.parseInt(avyId) + 1;
-            todoDo.setAvyId(Integer.toString(i));
-            todoDo.setExecutorId(executorId);
-            todoDo.setCanRetreat("0");
-            todoDo.setCanWithdraw("1");
-            todoDo.makeTodoAvyInf();
+        TodoAvyInfoDo todoDo = new TodoAvyInfoDo();
+        BeanUtils.copyProperties(processInst, todoDo);
+        String avyId = processInst.getAvyId();
+        int i = Integer.parseInt(avyId) + 1;
+        todoDo.setAvyId(Integer.toString(i));
+        todoDo.setExecutorId(executorId);
+        todoDo.setCanRetreat("0");
+        todoDo.setCanWithdraw("1");
+        todoDo.makeTodoAvyInf();
 
     }
 
     /**
      * 生成历史数据
+     *
      * @param processInst 流程实例信息
      */
-    public void makeHistAvy(ProcessInstDo processInst){
+    public void makeHistAvy(ProcessInstDo processInst) {
         HistAvyDo histAvyDo = new HistAvyDo();
         BeanUtils.copyProperties(processInst, histAvyDo);
         String executorId = processInst.getExecutorId();
@@ -199,9 +205,10 @@ public class ProcessServiceImpl implements IProcessService {
 
     /**
      * 删除执行人的待办信息
+     *
      * @param processInst
      */
-    public void deleteTodoAvyInf(ProcessInstDo processInst){
+    public void deleteTodoAvyInf(ProcessInstDo processInst) {
         String executorId = processInst.getExecutorId();
         if (executorId.length() == 3) {
             executorId = SwapAreaUtils.getCommonInfo().getFirstUser();
@@ -216,7 +223,7 @@ public class ProcessServiceImpl implements IProcessService {
         String avyId = processInst.getAvyId();
         int i = Integer.parseInt(avyId);
         System.out.println("删除待办时avyId=" + i);
-        if (i > 1){
+        if (i > 1) {
             List<String> users = this.getNextExecutorList(Integer.toString(i - 1));
             for (String user : users) {
                 TodoAvyInfoDo mDo = new TodoAvyInfoDo();
@@ -230,14 +237,15 @@ public class ProcessServiceImpl implements IProcessService {
 
     /**
      * 更新流程实例
+     *
      * @param processInst
      */
-    public void updateProcessInfo(ProcessInstDo processInst){
+    public void updateProcessInfo(ProcessInstDo processInst) {
         String avyId = processInst.getAvyId();
         int i = Integer.parseInt(avyId);
         TemplateInfo templateInfo = SwapAreaUtils.getCommonInfo().getTemplateInfo();
         List<TplAvyInfoDo> avyInfoList = templateInfo.getAvyInfoList();
-        if (i == avyInfoList.size()){//已经是最后一步了
+        if (i == avyInfoList.size()) {//已经是最后一步了
             processInst.setProcessTpcd("12");
 //            processInst.setAvyId(Integer.toString(i + 1));
         } else {
@@ -248,6 +256,7 @@ public class ProcessServiceImpl implements IProcessService {
 
     /**
      * 收回待办
+     *
      * @param processInstId
      * @return
      */
@@ -279,6 +288,7 @@ public class ProcessServiceImpl implements IProcessService {
 
     /**
      * 申请维护-修改
+     *
      * @param leaveInfoDo
      */
     @Override
@@ -314,6 +324,7 @@ public class ProcessServiceImpl implements IProcessService {
 
     /**
      * 申请维护-删除
+     *
      * @param processInstId
      */
     @Override
@@ -338,21 +349,22 @@ public class ProcessServiceImpl implements IProcessService {
     /**
      * 获取下一个用户节点
      */
-    public void getNextNodeInfo(){
+    public void getNextNodeInfo() {
 
     }
 
     /**
      * 根据学院ID及院长角色ID获取院长信息ID
+     *
      * @param academyNo 学院ID
      * @return 院长ID
      */
-    public String getDean(String academyNo){
+    public String getDean(String academyNo) {
         User user = new User();
         user.setAcademyNo(academyNo);
         user.setExecutorId(Constant._004);
         List<User> users = user.getUser();
-        if (null != users && users.size() > 0){
+        if (null != users && users.size() > 0) {
             return users.get(0).getUserId();
         }
         return null;
@@ -361,13 +373,14 @@ public class ProcessServiceImpl implements IProcessService {
     /**
      * 获取主任ID
      * 假设学校里只有一名负责流程审批的主任
+     *
      * @return
      */
-    public String getChairman(){
+    public String getChairman() {
         User user = new User();
         user.setExecutorId(Constant._005);
         List<User> users = user.getUser();
-        if (null != users && users.size() > 0){
+        if (null != users && users.size() > 0) {
             return users.get(0).getUserId();
         }
         return null;
@@ -375,26 +388,60 @@ public class ProcessServiceImpl implements IProcessService {
 
     /**
      * 根据老师id查询学生的请假情况
+     *
      * @param condition 查询条件 0-查询所有，1-查询未开始的请假，2-查询正在进行的请假，3-查询已经结束的请假
      * @param page
      * @param rows
      * @return
      */
-    public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows){
+    public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows) {
         //1.根据用户id查询teacher_leave中间表，找到流程实例id
+        //2.根据流程实例查询请假信息，只查询申请成功的
         String teacherNo = SwapAreaUtils.getCommonInfo().getCurrentUserId();
         LeaveInfoDo leaveInfoDo = new LeaveInfoDo();
         leaveInfoDo.setTeacherNo(teacherNo);
-        leaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndCondition();
-        String[] con = condition.split(",");
-        for (String s : con) {
-            if (s.equals("0")) {
-                //查询所有
-
-                break;
+        //设置分页
+        leaveInfoDo.setRows(rows);
+        leaveInfoDo.setPage(true);
+        leaveInfoDo.setPage(page);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        leaveInfoDo.setToday(format.format(new Date()));
+        List<LeaveInfoDo> query = new ArrayList<>();
+        List<String> status = new ArrayList<>();
+        if (condition.contains(Constant.NUM_0)) {
+            //查询所有
+            query = leaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndConditionAll();
+        }else{
+            //根据查询条件分批查询
+            if (condition.contains(Constant.NUM_1)){
+                status.add("bfr");
             }
+            if (condition.contains(Constant.NUM_2)){
+                status.add("curr");
+            }
+            if (condition.contains(Constant.NUM_2)){
+                status.add("aft");
+            }
+            leaveInfoDo.setLeaveStatus(status);
+            query = leaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndCondition();
         }
-        //2.根据流程实例查询请假信息，只查询申请成功的
-        return null;
+
+       //3.组装返回数据
+        HistAvyVo vo = new HistAvyVo();
+        List<HistAvyInfoVo> infoVoList = new ArrayList<>();
+        vo.setTotal(query.size());
+        for (LeaveInfoDo infoDo : query) {
+            HistAvyInfoVo infoVo = new HistAvyInfoVo();
+            BeanUtils.copyProperties(infoDo, infoVo);
+            ClazzDo clazzDo = new ClazzDo();
+            clazzDo.setClassNo(infoDo.getClassNo());
+            clazzDo = clazzDo.findClazzById();
+            infoVo.setClassName(clazzDo.getClassName());
+            infoVo.setMajorName(clazzDo.getMajorName());
+            infoVo.setAcademyName(clazzDo.getAcademyName());
+            infoVoList.add(infoVo);
+        }
+        vo.setRows(infoVoList);
+        return vo;
     }
 }

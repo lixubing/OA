@@ -3,8 +3,11 @@ package com.edu.oa;
 import com.edu.oa.mdo.CourseDo;
 import com.edu.oa.mdo.LeaveInfoDo;
 import com.edu.oa.mdo.TemplateInfo;
+import com.edu.oa.service.IProcessService;
 import com.edu.oa.util.CommonInfo;
 import com.edu.oa.util.SwapAreaUtils;
+import com.edu.oa.vo.HistAvyInfoVo;
+import com.edu.oa.vo.HistAvyVo;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,8 +24,10 @@ import java.util.List;
 class OaApplicationTests {
 	@Resource
 	private SqlSessionTemplate sessionTemplate;
+//	@Resource
+//	private CourseDo mdo;
 	@Resource
-	private CourseDo mdo;
+	private IProcessService processService;
 
 	@Test
 	void contextLoads() {
@@ -32,13 +37,13 @@ class OaApplicationTests {
 		java.sql.Date dateSql = new java.sql.Date(date.getTime());
 		System.out.println(simpleDateFormat.format(dateSql));
 	}
-	@Test
-	void testMdo(){
-		//CourseDo mdo = new CourseDo();
-		mdo.setStudentNo("202000100101");
-		List<CourseDo> list = mdo.getCourseDoByStudentNo();
-		System.out.println(list.get(0).getCourseName() + "-" + list.get(0).getTeacherName());
-	}
+//	@Test
+//	void testMdo(){
+//		//CourseDo mdo = new CourseDo();
+//		mdo.setStudentNo("202000100101");
+//		List<CourseDo> list = mdo.getCourseDoByStudentNo();
+//		System.out.println(list.get(0).getCourseName() + "-" + list.get(0).getTeacherName());
+//	}
 	@Test
 	public void test1(){
 		System.out.println(sessionTemplate);
@@ -84,6 +89,22 @@ class OaApplicationTests {
 		String b = "00001010";
 		System.out.println(a.indexOf("1"));
 		System.out.println(b.indexOf("1"));
+	}
+	@Test
+	public void testLeaveTea(){
+		System.out.println(processService);
+		SwapAreaUtils.getCommonInfo().setCurrentUserId("2000001001");
+		HistAvyVo vo = processService.findStudentLeaveByTeacher("1,2,3", 0, 3);
+		List<HistAvyInfoVo> rows = vo.getRows();
+		for (HistAvyInfoVo row : rows) {
+			String days = row.getDays();
+			System.out.println(days);
+		}
+	}
+	@Test
+	public void testLeaveTea1(){
+		System.out.println(processService);
+
 	}
 
 }
