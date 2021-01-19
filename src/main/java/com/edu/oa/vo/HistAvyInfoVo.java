@@ -24,6 +24,16 @@ public class HistAvyInfoVo {
 
     /**流程历史执行信息*/
     private List<HistAvyInfoSubVo> subVoList;
+    //请假状态 未开始，正在休假，休假结束
+    private String leaveStatus;
+
+    public String getLeaveStatus() {
+        return leaveStatus;
+    }
+
+    public void setLeaveStatus(String leaveStatus) {
+        this.leaveStatus = leaveStatus;
+    }
 
     public String getMajorName() {
         return majorName;

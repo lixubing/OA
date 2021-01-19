@@ -19,8 +19,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -394,7 +396,7 @@ public class ProcessServiceImpl implements IProcessService {
      * @param rows
      * @return
      */
-    public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows) {
+    public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows) throws ParseException {
         //1.根据用户id查询teacher_leave中间表，找到流程实例id
         //2.根据流程实例查询请假信息，只查询申请成功的
         String teacherNo = SwapAreaUtils.getCommonInfo().getCurrentUserId();
@@ -405,11 +407,13 @@ public class ProcessServiceImpl implements IProcessService {
         leaveInfoDo.setPage(true);
         leaveInfoDo.setPage(page);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        leaveInfoDo.setToday(format.format(new Date()));
+        String today = format.format(new Date());
+        leaveInfoDo.setToday(today);
         List<LeaveInfoDo> query = new ArrayList<>();
         List<String> status = new ArrayList<>();
         if (condition.contains(Constant.NUM_0)) {
             //查询所有
+            LOG.info("--查询所有--");
             query = leaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndConditionAll();
         }else{
             //根据查询条件分批查询
@@ -419,11 +423,13 @@ public class ProcessServiceImpl implements IProcessService {
             if (condition.contains(Constant.NUM_2)){
                 status.add("curr");
             }
-            if (condition.contains(Constant.NUM_2)){
+            if (condition.contains(Constant.NUM_3)){
                 status.add("aft");
             }
+            LOG.info("查询条件=" + status.toString());
             leaveInfoDo.setLeaveStatus(status);
             query = leaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndCondition();
+            LOG.info(query.size()+"");
         }
 
        //3.组装返回数据
@@ -434,11 +440,27 @@ public class ProcessServiceImpl implements IProcessService {
             HistAvyInfoVo infoVo = new HistAvyInfoVo();
             BeanUtils.copyProperties(infoDo, infoVo);
             ClazzDo clazzDo = new ClazzDo();
+            LOG.info("classNo=" + infoDo.getClassNo());
             clazzDo.setClassNo(infoDo.getClassNo());
             clazzDo = clazzDo.findClazzById();
             infoVo.setClassName(clazzDo.getClassName());
             infoVo.setMajorName(clazzDo.getMajorName());
             infoVo.setAcademyName(clazzDo.getAcademyName());
+            infoVo.setOwner(infoDo.getUsername());
+            //设置请假状态 未开始，正在休假，休假结束
+            Date startDate = format.parse(infoVo.getStartDate());
+            Date endDate = format.parse(infoVo.getEndDate());
+            Date now = format.parse(today);
+            if (now.compareTo(startDate) < 0){
+                //未开始
+                infoVo.setLeaveStatus("未开始");
+            }else if(now.compareTo(endDate) > 0){
+                //已经结束
+                infoVo.setLeaveStatus("休假结束");
+            }else{
+                //正在进行中
+                infoVo.setLeaveStatus("正在休假");
+            }
             infoVoList.add(infoVo);
         }
         vo.setRows(infoVoList);

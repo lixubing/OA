@@ -1,7 +1,6 @@
 package com.edu.oa.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.edu.oa.mdo.HistAvyDo;
 import com.edu.oa.mdo.LeaveInfoDo;
 import com.edu.oa.mdo.User;
 import com.edu.oa.service.*;
@@ -48,23 +47,28 @@ public class WfeController {
     @ModelAttribute("user")
     public User initUser(){
         User user = new User();
-        user.setUserId("202000100101");
+        user.setUserId("2000001001");
         user = user.queryUserByUserId();
         LOG.info("controller前置=" + user.getUserId());
         SwapAreaUtils.getCommonInfo().setUser(user);
+        SwapAreaUtils.getCommonInfo().setCurrentUserId(user.getUserId());
         return user;
     }
 
     @RequestMapping("/askforleave")
     @ResponseBody
     public JsonResult askforleave(LeaveInfoDo leaveInfoDo){
-        System.out.println("请假天数：" + leaveInfoDo.getDays());
-        System.out.println(JSONObject.toJSONString(leaveInfoDo));
-        String userId = "202000100101";
-        leaveInfoDo.setUserId(userId);
+        JsonResult js = new JsonResult();
+        try{
+            startProcessService.startLeaveProcess(leaveInfoDo);
+        }catch (Exception e){
+            LOG.info(e.getMessage(),e);
+            js.setSuccess(false);
+            js.setMsg(e.getMessage());
+        }
         //
-        startProcessService.startLeaveProcess(leaveInfoDo);
-        return JsonResult.SUCCESS();
+
+        return js;
     }
     @RequestMapping("/ask")
     @ResponseBody
@@ -113,13 +117,21 @@ public class WfeController {
      * @return
      */
     @RequestMapping("/approve")
-    public String approve(String description, String decision, String processInstId){
-        SwapAreaUtils.getCommonInfo().setCurrentUserId("2016001901");
+    @ResponseBody
+    public JsonResult approve(String description, String decision, String processInstId){
+//        SwapAreaUtils.getCommonInfo().setCurrentUserId("2016001901");
         System.out.println("description = " + description + " & decision = " + decision + " & processInstId = " + processInstId);
-        if (Constant.decision_0.equals(decision) && StringUtils.isBlank(description))
-            throw new RuntimeException("决绝审批时，原因为必输项！");
-        dealProcess.dealProcess(description, decision, processInstId);
-        return "";
+        JsonResult js = new JsonResult();
+        try {
+            if (Constant.decision_0.equals(decision) && StringUtils.isBlank(description))
+                throw new RuntimeException("决绝审批时，原因为必输项！");
+            dealProcess.dealProcess(description, decision, processInstId);
+        } catch (Exception e){
+            js.setMsg(e.getMessage());
+            js.setSuccess(false);
+        }
+
+        return js;
     }
 
     /**
@@ -224,7 +236,14 @@ public class WfeController {
     @RequestMapping("/findStudentLeaveByTeacher")
     @ResponseBody
     public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows){
-
-        return processService.findStudentLeaveByTeacher(condition, page, rows);
+        if(StringUtils.isBlank(condition))
+            condition = "0";
+        HistAvyVo histAvyVo = null;
+        try {
+                histAvyVo = processService.findStudentLeaveByTeacher(condition, page, rows);
+            }catch (Exception e){
+            LOG.info(e.getMessage(), e);
+            }
+        return histAvyVo;
     }
 }

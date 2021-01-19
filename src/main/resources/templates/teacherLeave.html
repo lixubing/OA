@@ -18,7 +18,7 @@
 			$(function() {
 
 				$('#dl').datagrid({
-					url: '/wfe/fidMyHistLeave',
+					url: '/wfe/findStudentLeaveByTeacher',
 					method:'post',
 					striped: true,
 					rownumbers: true,
@@ -44,19 +44,9 @@
 								title: '请假天数',
 								width: 50
 							},{
-								field: 'tpcd',
+								field: 'leaveStatus',
 								title: '请假状态',
-								width: 50,
-								formatter: function(value,row,index){
-								        var tpcd = row.processTpcd;
-								        if (tpcd == 10){
-								            return '申请中';
-								        }else if (tpcd == 12){
-								            return '申请成功';
-								        }else if (tpcd == 14){
-								            return '已拒绝';
-								        }
-                                }
+								width: 50
 							},{
 								field: 'academyName',
 								title: '学院',
@@ -66,7 +56,7 @@
 								title: '专业',
 								width: 50
 							},{
-								field: 'classNo',
+								field: 'className',
 								title: '班级',
 								width: 50
 							}
@@ -75,7 +65,23 @@
 				});
 			});
 
-
+		function choice(){
+			var ff = $("#ff").serializeArray();
+			var condition = "";
+			console.info(ff);
+			for (var i = 0 ; i < ff.length ; i++){
+				condition += ff[i].value;
+			}
+			console.info(condition);
+			$.post(
+				"/wfe/findStudentLeaveByTeacher",
+				{"condition":condition},
+				function(data){
+					console.info(data);
+					$('#dl').datagrid('loadData',data);
+				}
+			);
+		}
 
 		</script>
 		<div class="easyui-layout" fit="true">
@@ -87,10 +93,10 @@
 					<table>
 						<tr>
 
-							<td width="150px"><input class="easyui-checkbox" name="fruit" value="Orange" label="未开始休假:"></td>
-							<td width="150px"><input class="easyui-checkbox" name="fruit" value="Banana" label="正在休假:" labelWidth="70px"></td>
-							<td width="150px"><input class="easyui-checkbox" name="fruit" value="Banana" label="已结束休假:" ></td>
-							<td width="150px"><input class="easyui-checkbox" name="fruit" value="Apple" label="全部:" labelWidth="40px"></td>
+							<td width="150px"><input class="easyui-checkbox" name="condition" value="1" label="未开始休假:"></td>
+							<td width="150px"><input class="easyui-checkbox" name="condition" value="2" label="正在休假:" labelWidth="70px"></td>
+							<td width="150px"><input class="easyui-checkbox" name="condition" value="3" label="已结束休假:" ></td>
+							<td width="150px"><input class="easyui-checkbox" name="condition" value="0" label="全部:" labelWidth="40px"></td>
 							<td width="150px"><a class="easyui-linkbutton" href="#" onclick="choice()">筛选</a></td>
 						</tr>
 					</table>

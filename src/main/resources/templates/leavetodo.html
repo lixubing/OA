@@ -98,7 +98,17 @@
 					"/wfe/approve",
 					{'description':$("#description").val(),'decision':'0','processInstId':processInstId},
 					function(data){
-						alert(data);
+						if (data.success){
+								$.messager.show({
+									title:'提示',
+									msg:'审核成功',
+									timeout:3000
+								});
+							$('#center').panel('refresh','leaveTodo');
+						}else{
+							var msg = data.msg;
+							$.messager.alert('提示',msg,'warning');
+						}
 					}
 				);
 			}

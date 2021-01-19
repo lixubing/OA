@@ -6,6 +6,7 @@ import com.edu.oa.mdo.TemplateInfo;
 import com.edu.oa.vo.HistAvyVo;
 import com.edu.oa.vo.RefuseLeaveVo;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface IProcessService {
@@ -51,5 +52,5 @@ public interface IProcessService {
 
     void changeWithdrewLeaveInfo(LeaveInfoDo leaveInfoDo);
     public void deleteWithdrewLeaveInfo(String processInstId);
-    public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows);
+    public HistAvyVo findStudentLeaveByTeacher(String condition, Integer page, Integer rows) throws ParseException;
 }

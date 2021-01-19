@@ -86,15 +86,14 @@ public class TodoService implements ITodoService {
 
     /**
      * 获取待办列表
-     * @param canWithdraw 可收回标志 1-可收回，0-不可收回
-     * @param canRetreat 可退回标志 1-可退回，0-不可退回
-     * @param withdrew 已收回标志 1-已收回，0-未收回
+     *  canWithdraw 可收回标志 1-可收回，0-不可收回
+     *  canRetreat 可退回标志 1-可退回，0-不可退回
+     *  withdrew 已收回标志 1-已收回，0-未收回
      * @return
      */
     public List<LeaveInfoDo> getTodoList(TodoAvyInfoDo mdo){
         String userId = SwapAreaUtils.getCommonInfo().getCurrentUserId();
-        userId = "202000100101";
-
+        LOG.info("待办查询用户id=" + userId);
         mdo.setExecutorId(userId);
         List<TodoAvyInfoDo> todoList = mdo.getTodoList();
 

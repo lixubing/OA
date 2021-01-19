@@ -16,6 +16,7 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -91,7 +92,7 @@ class OaApplicationTests {
 		System.out.println(b.indexOf("1"));
 	}
 	@Test
-	public void testLeaveTea(){
+	public void testLeaveTea() throws ParseException {
 		System.out.println(processService);
 		SwapAreaUtils.getCommonInfo().setCurrentUserId("2000001001");
 		HistAvyVo vo = processService.findStudentLeaveByTeacher("1,2,3", 0, 3);

@@ -59,7 +59,11 @@ public class StartProcessServiceImpl implements IStartProcessService {
 
     private void completeLeaveInfo(LeaveInfoDo leaveInfoDo) {
         User user = SwapAreaUtils.getCommonInfo().getUser();
+        if (user.getUserId().length() != 12){
+            throw new RuntimeException("当前用户不是学生，不能申请流程");
+        }
         leaveInfoDo.setUsername(user.getUsername());
+        leaveInfoDo.setUserId(user.getUserId());
         leaveInfoDo.setClassNo(user.getClazzNo());
     }
 

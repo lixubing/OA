@@ -9,7 +9,7 @@ public class ClazzDo extends BaseDo {
      */
     private String classNo;
     /**
-     * 班级id
+     * 班级名称
      */
     private String className;
     /**

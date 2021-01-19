@@ -156,14 +156,14 @@
         and p.process_tpcd = '12'
         <foreach collection="leaveStatus" item="status" separator="or" open="and ( " close=")">
             <if test="status == 'bfr'">
-                b.start_date &lt; #{startDate}
+                b.start_date &gt; #{today}
             </if>
             <if test="status == 'curr'">
-                b.start_date &gt;= #{startDate}
-                and b.end_date &lt;= #{endDate}
+               ( b.start_date &lt;= #{today}
+                and b.end_date &gt;= #{today})
             </if>
             <if test="status == 'aft'">
-                b.end_date &gt; #{endDate}
+                b.end_date &lt; #{today}
             </if>
         </foreach>
     </select>
@@ -176,14 +176,14 @@
         and p.process_tpcd = '12'
         <foreach collection="leaveStatus" item="status" separator="or" open="and ( " close=")">
             <if test="status == 'bfr'">
-                 b.start_date &lt; #{startDate}
+                b.start_date &lt; #{today}
             </if>
             <if test="status == 'curr'">
-                 b.start_date &gt;= #{startDate}
-                and b.end_date &lt;= #{endDate}
+               ( b.start_date &lt;= #{today}
+                and b.end_date &gt;= #{today})
             </if>
             <if test="status == 'aft'">
-                 b.end_date &gt; #{endDate}
+                b.end_date &lt; #{today}
             </if>
         </foreach>
     </select>
