@@ -187,4 +187,54 @@
             </if>
         </foreach>
     </select>
+    <select id="queryLeaveByReviewExecutor" resultType="com.edu.oa.mdo.LeaveInfoDo">
+        select b.owner as userName,
+            b.process_inst_id as processInstId,
+            b.start_date as startDate,
+            b.end_date as endDate,
+            b.days,
+            b.description,
+            p.process_tpcd as processTpcd,
+            h.decision,
+            h.decision_desc as decisionDesc
+        from biz_info b, process_info p, hist_avy h
+        where b.process_inst_id = p.process_inst_id
+        and b.process_inst_id = h.process_inst_id
+        and h.executor_id = #{executorId}
+        and h.avy_id != '1'
+        <if test="startDateBegin != null and startDateBegin != ''">
+            and b.start_date &gt;= #{startDateBegin}
+        </if>
+        <if test="startDateEnd != null and startDateEnd != ''">
+            and b.start_date &lt;= #{startDateEnd}
+        </if>
+        <if test="endDateBegin != null and endDateBegin != ''">
+            and b.end_date &gt;= #{endDateBegin}
+        </if>
+        <if test="endDateEnd != null and endDateEnd != ''">
+            and b.end_date &lt;= #{endDateEnd}
+        </if>
+
+    </select>
+    <select id="queryLeaveByReviewExecutor_COUNT" resultType="java.lang.Integer">
+        select count(1)
+        from biz_info b, process_info p, hist_avy h
+        where b.process_inst_id = p.process_inst_id
+        and b.process_inst_id = h.process_inst_id
+        and h.executor_id = #{executorId}
+        and h.avy_id != '1'
+        <if test="startDateBegin != null and startDateBegin != ''">
+            and b.start_date &gt;= #{startDateBegin}
+        </if>
+        <if test="startDateEnd != null and startDateEnd != ''">
+            and b.start_date &lt;= #{startDateEnd}
+        </if>
+        <if test="endDateBegin != null and endDateBegin != ''">
+            and b.end_date &gt;= #{endDateBegin}
+        </if>
+        <if test="endDateEnd != null and endDateEnd != ''">
+            and b.end_date &lt;= #{endDateEnd}
+        </if>
+
+    </select>
 </mapper>

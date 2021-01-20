@@ -46,6 +46,16 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
      * 流程状态
      */
     private String processTpcd;
+    private String startDateBegin;
+    private String startDateEnd;
+    private String endDateBegin;
+    private String endDateEnd;
+    private String decision;
+    private String decisionDesc;
+    /***
+     * 复核执行人
+     */
+    private String executorId;
 
     /**
      * 请假状态
@@ -55,6 +65,62 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
      */
     private List<String> leaveStatus;
     private String today;
+
+    public String getStartDateBegin() {
+        return startDateBegin;
+    }
+
+    public void setStartDateBegin(String startDateBegin) {
+        this.startDateBegin = startDateBegin;
+    }
+
+    public String getStartDateEnd() {
+        return startDateEnd;
+    }
+
+    public void setStartDateEnd(String startDateEnd) {
+        this.startDateEnd = startDateEnd;
+    }
+
+    public String getEndDateBegin() {
+        return endDateBegin;
+    }
+
+    public void setEndDateBegin(String endDateBegin) {
+        this.endDateBegin = endDateBegin;
+    }
+
+    public String getEndDateEnd() {
+        return endDateEnd;
+    }
+
+    public void setEndDateEnd(String endDateEnd) {
+        this.endDateEnd = endDateEnd;
+    }
+
+    public String getDecision() {
+        return decision;
+    }
+
+    public void setDecision(String decision) {
+        this.decision = decision;
+    }
+
+    public String getDecisionDesc() {
+        return decisionDesc;
+    }
+
+    public void setDecisionDesc(String decisionDesc) {
+        this.decisionDesc = decisionDesc;
+    }
+
+    public String getExecutorId() {
+        return executorId;
+    }
+
+    public void setExecutorId(String executorId) {
+        this.executorId = executorId;
+    }
 
     public String getToday() {
         return today;
@@ -326,5 +392,13 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
      */
     public List<LeaveInfoDo> queryTeacherLeaveInfoByTeacherNoAndCondition() {
         return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryTeacherLeaveInfoByTeacherNoAndCondition", this);
+    }
+
+    /**
+     * 查询审核操作员审核过的记录
+     * @return
+     */
+    public List<LeaveInfoDo> queryLeaveByReviewExecutor() {
+        return (List<LeaveInfoDo>) getListByParam("LeaveInfoDo.queryLeaveByReviewExecutor", this);
     }
 }

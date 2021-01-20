@@ -160,4 +160,5 @@ public class HistAvyDo extends BaseDo {
     public int deleteHistAvyByProcessInstId() {
         return delete("HistAvyDo.deleteHistAvyByProcessInstId", this);
     }
+
 }

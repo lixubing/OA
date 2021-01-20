@@ -130,4 +130,9 @@ public class LoginController {
         return "teacherLeave";
     }
 
+    @RequestMapping("/reviewLeave")
+    public String reviewLeave(){
+        return "reviewLeave";
+    }
+
 }

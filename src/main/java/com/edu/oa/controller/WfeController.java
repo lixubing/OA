@@ -9,6 +9,7 @@ import com.edu.oa.util.JsonResult;
 import com.edu.oa.util.SwapAreaUtils;
 import com.edu.oa.vo.HistAvyVo;
 import com.edu.oa.vo.RefuseLeaveVo;
+import com.edu.oa.vo.ReviewHistLeaveInVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class WfeController {
     @ModelAttribute("user")
     public User initUser(){
         User user = new User();
-        user.setUserId("2000001001");
+        user.setUserId("202000100102");
         user = user.queryUserByUserId();
         LOG.info("controller前置=" + user.getUserId());
         SwapAreaUtils.getCommonInfo().setUser(user);
@@ -245,5 +246,16 @@ public class WfeController {
             LOG.info(e.getMessage(), e);
             }
         return histAvyVo;
+    }
+
+    /**
+     * 流程审批人查询自己审批过的所有流程
+     *
+     * @return
+     */
+    @RequestMapping("/findLeaveByReviewExecutor")
+    @ResponseBody
+    public HistAvyVo findLeaveByReviewExecutor(ReviewHistLeaveInVo inVo){
+        return histService.findLeaveByReviewExecutor(inVo);
     }
 }

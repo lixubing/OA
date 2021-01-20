@@ -5,10 +5,7 @@ import com.edu.oa.mdo.LeaveInfoDo;
 import com.edu.oa.service.IHistService;
 import com.edu.oa.util.Constant;
 import com.edu.oa.util.SwapAreaUtils;
-import com.edu.oa.vo.HistAvyInfoSubVo;
-import com.edu.oa.vo.HistAvyInfoVo;
-import com.edu.oa.vo.HistAvyVo;
-import com.edu.oa.vo.RefuseLeaveVo;
+import com.edu.oa.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,6 +130,32 @@ public class HistServiceImpl implements IHistService {
             result.add(refuseLeaveVo);
         }
         return result;
+    }
+
+    /**
+     * 根据审批执行人的id查询审批历史
+     * @param inVo
+     * @return
+     */
+    @Override
+    public HistAvyVo findLeaveByReviewExecutor(ReviewHistLeaveInVo inVo) {
+        String userId = SwapAreaUtils.getCommonInfo().getUser().getUserId();
+        LeaveInfoDo leaveInfoDo = new LeaveInfoDo();
+        BeanUtils.copyProperties(inVo, leaveInfoDo);
+        leaveInfoDo.setExecutorId(userId);
+        leaveInfoDo.setPage(true);
+        List<LeaveInfoDo> leaveInfoList = leaveInfoDo.queryLeaveByReviewExecutor();
+        HistAvyVo histAvyVo = new HistAvyVo();
+        List<HistAvyInfoVo> list = new ArrayList<>();
+        for (LeaveInfoDo infoDo : leaveInfoList) {
+            HistAvyInfoVo infoVo = new HistAvyInfoVo();
+            BeanUtils.copyProperties(infoDo, infoVo);
+            infoVo.setOwner(infoDo.getUsername());
+            list.add(infoVo);
+        }
+        histAvyVo.setTotal(leaveInfoDo.getTotal());
+        histAvyVo.setRows(list);
+        return histAvyVo;
     }
 
     /**
