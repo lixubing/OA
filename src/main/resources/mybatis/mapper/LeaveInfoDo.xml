@@ -194,6 +194,7 @@
             b.end_date as endDate,
             b.days,
             b.description,
+            b.class_no as classNo,
             p.process_tpcd as processTpcd,
             h.decision,
             h.decision_desc as decisionDesc
@@ -214,7 +215,7 @@
         <if test="endDateEnd != null and endDateEnd != ''">
             and b.end_date &lt;= #{endDateEnd}
         </if>
-
+        order by b.start_date desc,b.end_date desc
     </select>
     <select id="queryLeaveByReviewExecutor_COUNT" resultType="java.lang.Integer">
         select count(1)

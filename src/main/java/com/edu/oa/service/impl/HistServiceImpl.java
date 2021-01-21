@@ -1,5 +1,6 @@
 package com.edu.oa.service.impl;
 
+import com.edu.oa.mdo.ClazzDo;
 import com.edu.oa.mdo.HistAvyDo;
 import com.edu.oa.mdo.LeaveInfoDo;
 import com.edu.oa.service.IHistService;
@@ -150,6 +151,13 @@ public class HistServiceImpl implements IHistService {
         for (LeaveInfoDo infoDo : leaveInfoList) {
             HistAvyInfoVo infoVo = new HistAvyInfoVo();
             BeanUtils.copyProperties(infoDo, infoVo);
+            ClazzDo clazzDo = new ClazzDo();
+            LOG.info("classNo=" + infoDo.getClassNo());
+            clazzDo.setClassNo(infoDo.getClassNo());
+            clazzDo = clazzDo.findClazzById();
+            infoVo.setClassName(clazzDo.getClassName());
+            infoVo.setMajorName(clazzDo.getMajorName());
+            infoVo.setAcademyName(clazzDo.getAcademyName());
             infoVo.setOwner(infoDo.getUsername());
             list.add(infoVo);
         }

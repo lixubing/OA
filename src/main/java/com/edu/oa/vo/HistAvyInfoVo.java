@@ -27,6 +27,25 @@ public class HistAvyInfoVo {
     //请假状态 未开始，正在休假，休假结束
     private String leaveStatus;
 
+    private String decision;
+    private String decisionDesc;
+
+    public String getDecision() {
+        return decision;
+    }
+
+    public void setDecision(String decision) {
+        this.decision = decision;
+    }
+
+    public String getDecisionDesc() {
+        return decisionDesc;
+    }
+
+    public void setDecisionDesc(String decisionDesc) {
+        this.decisionDesc = decisionDesc;
+    }
+
     public String getLeaveStatus() {
         return leaveStatus;
     }

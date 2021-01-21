@@ -73,14 +73,7 @@
 				condition += ff[i].value;
 			}
 			console.info(condition);
-			$.post(
-				"/wfe/findStudentLeaveByTeacher",
-				{"condition":condition},
-				function(data){
-					console.info(data);
-					$('#dl').datagrid('loadData',data);
-				}
-			);
+			$('#dl').datagrid('load',{"condition":condition});
 		}
 
 		</script>

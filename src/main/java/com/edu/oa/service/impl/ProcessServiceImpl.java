@@ -435,7 +435,7 @@ public class ProcessServiceImpl implements IProcessService {
        //3.组装返回数据
         HistAvyVo vo = new HistAvyVo();
         List<HistAvyInfoVo> infoVoList = new ArrayList<>();
-        vo.setTotal(query.size());
+        vo.setTotal(leaveInfoDo.getTotal());
         for (LeaveInfoDo infoDo : query) {
             HistAvyInfoVo infoVo = new HistAvyInfoVo();
             BeanUtils.copyProperties(infoDo, infoVo);
