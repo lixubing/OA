@@ -66,10 +66,17 @@
 		var width1 = $('#west'.width);
 
 		$(function() {
-		    if (roles == 'ROLE_STUDENT'){
-		        data = studentData;
-		    }else{
-		        data = monitorData;
+		    if (roles == 'ROLE_COUNSELOR'){
+		        data = leaderData;
+		    }
+		    if (roles == 'ROLE_DEAN'){
+		        data = leaderData;
+		    }
+			 if (roles == 'ROLE_CHAIRMAN'){
+		        data = leaderData;
+		    }
+			 if (roles == 'ROLE_TEACHER'){
+		        data = teacherData;
 		    }
 			$('#sidemenu').sidemenu({
 				data: data,
@@ -125,35 +132,16 @@
 				href: 'personalInformation'
 			}]
 		}];
-		var monitorData = [{
+		var leaderData = [{
 			text: '假期管理',
 			iconCls: 'icon-more',
 			state: 'open',
 			children: [{
-				text: '假期申请',
-				href: 'askleave'
-			}, {
-				text: '历史假期',
-				href: 'findMyLeave'
-			}, {
 				text: '审批历史',
 				href: 'reviewLeave'
 			}, {
 				text: '假期审核',
 				href: 'leaveTodo'
-			}, {
-				text: '申请维护',
-				iconCls: 'icon-more',
-				children: [{
-					text: '已拒绝',
-				    href: 'findRefuseList'
-				}, {
-					text: '收回申请',
-				    href: 'myCanWithdrawLeave'
-				}, {
-					text: '申请维护',
-				    href: 'maintenanceLeave'
-				}]
 			}]
 		}, {
 			text: '个人中心',
@@ -163,29 +151,13 @@
 				href: 'personalInformation'
 			}]
 		}];
-		var studentData = [{
+        var teacherData = [{
 			text: '假期管理',
 			iconCls: 'icon-more',
 			state: 'open',
 			children: [{
-				text: '假期申请',
-				href: 'askleave'
-			}, {
-				text: '历史假期',
-				href: 'findMyLeave'
-			}, {
-				text: '申请维护',
-				iconCls: 'icon-more',
-				children: [{
-					text: '已拒绝',
-				    href: 'findRefuseList'
-				}, {
-					text: '收回申请',
-				    href: 'myCanWithdrawLeave'
-				}, {
-					text: '申请维护',
-				    href: 'maintenanceLeave'
-				}]
+				text: '请假情况',
+				href: 'teacherLeave'
 			}]
 		}, {
 			text: '个人中心',
@@ -195,7 +167,6 @@
 				href: 'personalInformation'
 			}]
 		}];
-
 
 
 </script>

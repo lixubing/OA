@@ -18,16 +18,21 @@
 			<td>
 		<div style="margin: 10px 0;"></div>
 		<div id="p"  title="登录" style="width:400px;padding:30px 60px; margin: auto auto auto 60%;" >
-			<form id="ff" method="post" >
+			<form id="ff" method="post" action="/login">
+				<div th:if="${param.logout != null}">
+					<div>
+						<p><font color="red">用户已注销成功！</font></p>
+					</div>
+				</div>
 				<div style="margin-bottom:20px">
 					<input class="easyui-textbox" name="name" style="width:100%" data-options="label:'账号:',required:true">
 				</div>
 				<div style="margin-bottom:20px">
-					<input class="easyui-passwordbox" name="password" style="width:100%" lastDelay='200' data-options="label:'密码:',required:true,validType:'password'">
+					<input class="easyui-passwordbox" name="password" style="width:100%" lastDelay='50' data-options="label:'密码:',required:true,validType:'password'">
 				</div>
 				<!-- 验证码 -->
-				<div style="margin-bottom:20px">
-					<input class="easyui-textbox" name="message" style="width:100%;height:60px" data-options="label:'Message:',multiline:true">
+				<div style="margin-bottom:20px" hidden="true">
+					<input class="easyui-textbox" name="message" style="width:100%;height:60px" data-options="label:'Message:',multiline:true" >
 				</div>
 				
 			</form>
@@ -46,21 +51,7 @@
 			
 		
 			function submitForm(){
-				$('#ff').form('submit', {
-		        url:"/login1",
-		        onSubmit: function(){
-		            // do some check
-		            // return false to prevent submit;
-					return true;
-		        },
-		        success:function(r){
-					var data = eval('(' + data + ')');
-					console.info(r);
-					//console.info(${application});
-		            alert(r);
-		            window.location.href= r;
-		        }
-			});
+				$('#ff').submit();
 			}
 			function clearForm(){
 				$('#ff').form('clear');

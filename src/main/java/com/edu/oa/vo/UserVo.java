@@ -1,8 +1,11 @@
-package com.edu.oa.mdo;
+package com.edu.oa.vo;
+
+import com.edu.oa.mdo.BaseDo;
+import com.edu.oa.mdo.Role;
 
 import java.util.List;
 
-public class User extends BaseDo{
+public class UserVo {
     /**登录用户id，唯一*/
     private String userId;
     private String username;
@@ -157,17 +160,5 @@ public class User extends BaseDo{
 
     public void setAcademyNo(String academyNo) {
         this.academyNo = academyNo;
-    }
-    public List<User> getUser(){
-        List<User> users = (List<User>) getListByParam("User.getUser", this);
-        return users;
-    }
-    public User queryUserByUserId(){
-        User user = (User) getObjectByParam("User.queryUserByUserId", this);
-        Role role = new Role();
-        role.setUserId(user.getUserId());
-        List<Role> roles = role.queryRoleByUserId();
-        user.setRoles(roles);
-        return user;
     }
 }

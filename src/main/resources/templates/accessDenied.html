@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>访问拒绝页面</title>
+</head>
+<body>
+    <h3><font color="red"><span th:text="${name}"></span></font>，您没有权限访问该页面！
+    您的权限是<font color="red"><span th:text="${roleName}"></span></font><br/>
+        <a href="logout">安全退出</a>
+    </h3>
+</body>
+</html>

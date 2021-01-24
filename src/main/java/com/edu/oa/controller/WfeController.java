@@ -1,6 +1,7 @@
 package com.edu.oa.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.edu.oa.mdo.ClazzDo;
 import com.edu.oa.mdo.LeaveInfoDo;
 import com.edu.oa.mdo.User;
 import com.edu.oa.service.*;
@@ -10,10 +11,14 @@ import com.edu.oa.util.SwapAreaUtils;
 import com.edu.oa.vo.HistAvyVo;
 import com.edu.oa.vo.RefuseLeaveVo;
 import com.edu.oa.vo.ReviewHistLeaveInVo;
+import com.edu.oa.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,8 +52,10 @@ public class WfeController {
      */
     @ModelAttribute("user")
     public User initUser(){
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        LOG.info("security中的用户id=" + userId);
         User user = new User();
-        user.setUserId("202000100102");
+        user.setUserId(userId);
         user = user.queryUserByUserId();
         LOG.info("controller前置=" + user.getUserId());
         SwapAreaUtils.getCommonInfo().setUser(user);
@@ -70,12 +77,6 @@ public class WfeController {
         //
 
         return js;
-    }
-    @RequestMapping("/ask")
-    @ResponseBody
-    public JsonResult askforleave1(){
-        System.out.println("请假天数：" );
-        return JsonResult.ERROR("申请失败");
     }
     @RequestMapping("/chooseCourse")
     @ResponseBody
@@ -258,4 +259,28 @@ public class WfeController {
     public HistAvyVo findLeaveByReviewExecutor(ReviewHistLeaveInVo inVo){
         return histService.findLeaveByReviewExecutor(inVo);
     }
+
+    @RequestMapping("/getPersonalInformation")
+    @ResponseBody
+    public UserVo getPersonalInformation(Model m){
+        UserVo outVo = new UserVo();
+        User user = (User) m.getAttribute("user");
+        ClazzDo clazzDo = new ClazzDo();
+        clazzDo.setClassNo(user.getClazzNo());
+        clazzDo = clazzDo.findClazzById();
+        user.setAcademy(clazzDo.getAcademyName());
+        user.setMajor(clazzDo.getMajorName());
+        user.setClassName(clazzDo.getClassName());
+        LOG.info("用户信息界面的用户id = " + user.getUserId());
+        BeanUtils.copyProperties(user, outVo);
+        return outVo;
+    }
+    @RequestMapping("/updatePersonalInformation")
+    @ResponseBody
+    public JsonResult updatePersonalInformation(UserVo vo){
+        System.out.println(vo.getMajor());
+        JsonResult js = new JsonResult();
+        return js;
+    }
+
 }

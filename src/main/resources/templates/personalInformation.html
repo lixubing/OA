@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+
+		<script type="text/javascript" src="easyui/jquery.min.js"></script>
+		<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+		<title></title>
+
+	</head>
+	<body>
+	<style>
+			#ff div{
+				margin-bottom:20px;
+			}
+			#ff div:nth-child(3) label{
+				vertical-align: top;
+			}
+<!--			#ff div label{-->
+
+<!--				width: 80px;-->
+<!--			}-->
+			#ff label{
+				display: inline-block;
+				width: 250px;
+				text-align: right;
+			}
+			#ff div {
+				width: 700px;
+			}
+			#ff div input{
+				width: 300px;
+			}
+			#ff{
+				margin: 40px 50px;
+			}
+			#ff div .choose{
+				width: 180px;
+			}
+		</style>
+	<script>
+			var ff = $("FF");
+			$(function(){
+				$('#ff').form('load','/wfe/getPersonalInformation');
+			});
+
+
+			function update1(){
+				console.info($("form").serialize());
+
+				$("form").form(
+					'submit',
+					{
+					onSubmit: function(){
+					},
+					success:function(data){
+					console.info(data);
+					var data = eval('(' + data + ')');
+						console.info(data);
+						if (data.success){
+								$.messager.show({
+									title:'提示',
+									msg:'修改成功',
+									timeout:3000
+								});
+								$('#center').panel('refresh','personalInformation');
+							}else{
+								var msg = data.msg;
+								$.messager.alert('提示',msg,'warning');
+							}
+					}}
+				);
+			}
+			function update(){
+				console.info($("form").serialize());
+
+				$.post(
+					'/wfe/updatePersonalInformation',
+					$("form").serialize(),
+					function(data){
+						if (data.success){
+								$.messager.show({
+									title:'提示',
+									msg:'修改成功',
+									timeout:2000
+								});
+								$('#center').panel('refresh','personalInformation');
+							}else{
+								var msg = data.msg;
+								$.messager.alert('提示',msg,'warning');
+						}
+					}
+				);
+			}
+
+
+		</script>
+	<div style="margin-left: 5%; margin-top: 3%;">
+		<form id="ff" method="post" action="/wfe/updatePersonalInformation">
+			<div>
+				<label for="userId">用户编号:</label>
+				<input id="userId" class="easyui-textbox days" type="text" name="userId" data-options="editable:false" />
+			</div>
+			<div>
+				<label for="username">用户名:</label>
+				<input id="username" class="easyui-textbox days" type="text" name="username" data-options="editable:false" />
+			</div>
+			<div>
+				<label for="age">年龄:</label>
+				<input id="age" class="easyui-textbox days" type="text" name="age" data-options="editable:false" />
+			</div>
+			<div>
+				<label for="gender">性别:</label>
+				<input id="gender" class="easyui-textbox days" type="text" name="gender" data-options="editable:false" />
+			</div>
+			<div>
+				<label for="email">邮箱:</label>
+				<input id="email" class="easyui-textbox days" type="text" name="email" data-options="" iconCls="icon-edit"/>
+			</div>
+			<div>
+				<label for="tel">电话:</label>
+				<input id="tel" class="easyui-textbox days" type="text" name="tel" data-options="" iconCls="icon-edit"/>
+			</div>
+			<div>
+				<label for="address">地址:</label>
+				<input id="address" class="easyui-textbox days" type="text" name="address" data-options="" iconCls="icon-edit"/>
+			</div>
+			<div>
+				<label for="className">班级:</label>
+				<input id="className" class="easyui-textbox days" type="text" name="className" data-options="editable:false" />
+			</div>
+			<div>
+				<label for="major">专业:</label>
+				<input id="major" class="easyui-textbox days" type="text" name="major" data-options="editable:false"/>
+			</div>
+			<div>
+				<label for="academy">学院:</label>
+				<input id="academy" class="easyui-textbox days" type="text" name="academy" data-options="editable:false" />
+			</div>
+			<div style="text-align: left;">
+				<label for="update"></label>
+				<a id="update" href="javascript:void(0)" class="easyui-linkbutton" onclick="update()" style="width:80px">修改</a>
+			</div>
+		</form>
+	</div>
+	</body>
+</html>

@@ -38,6 +38,7 @@
         h.process_inst_id = p.process_inst_id
         and h.process_inst_id = b.process_inst_id
         and h.executor_id = #{executorId}
+        order by b.start_date desc, b.end_date desc
     </select>
     <select id="queryHistAvyDoByExecutorId_COUNT" resultType="java.lang.Integer">
         select  count(1)

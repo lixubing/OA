@@ -212,6 +212,7 @@ public class ProcessServiceImpl implements IProcessService {
      */
     public void deleteTodoAvyInf(ProcessInstDo processInst) {
         String executorId = processInst.getExecutorId();
+        LOG.info("当前执行人id=" + executorId);
         if (executorId.length() == 3) {
             executorId = SwapAreaUtils.getCommonInfo().getFirstUser();
         }

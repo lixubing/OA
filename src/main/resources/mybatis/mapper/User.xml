@@ -6,6 +6,7 @@
     <select id="getUser" resultType="com.edu.oa.mdo.User">
         select username as username,
             password as password,
+            gender as gender,
             age as age,
             tel as tel,
             email as email,
@@ -31,6 +32,7 @@
         select username as username,
             user_id as userId,
             password as password,
+            gender as gender,
             age as age,
             tel as tel,
             email as email,

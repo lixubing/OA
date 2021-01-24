@@ -133,6 +133,7 @@
         and b.process_inst_id = p.process_inst_id
         and t.teacher_no = #{teacherNo}
         and p.process_tpcd = '12'
+        order by b.start_date desc, b.end_date desc
     </select>
     <select id="queryTeacherLeaveInfoByTeacherNoAndConditionAll_COUNT" resultType="java.lang.Integer">
         select count(1)
@@ -166,6 +167,7 @@
                 b.end_date &lt; #{today}
             </if>
         </foreach>
+        order by b.start_date desc, b.end_date desc
     </select>
     <select id="queryTeacherLeaveInfoByTeacherNoAndCondition_COUNT" resultType="java.lang.Integer">
         select count(1)
