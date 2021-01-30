@@ -169,6 +169,7 @@ public class ProcessServiceImpl implements IProcessService {
         if (executorId.length() == 3) {
             executorId = SwapAreaUtils.getCommonInfo().getFirstUser();
         }
+        LOG.info("executorId=" + executorId);
         TodoAvyInfoDo todoDo = new TodoAvyInfoDo();
         BeanUtils.copyProperties(processInst, todoDo);
         String avyId = processInst.getAvyId();
@@ -363,11 +364,13 @@ public class ProcessServiceImpl implements IProcessService {
      * @return 院长ID
      */
     public String getDean(String academyNo) {
+        LOG.info("academyNo=" + academyNo);
         User user = new User();
         user.setAcademyNo(academyNo);
         user.setExecutorId(Constant._004);
         List<User> users = user.getUser();
         if (null != users && users.size() > 0) {
+            LOG.info("查询出院长id=" + users.get(0).getUserId());
             return users.get(0).getUserId();
         }
         return null;

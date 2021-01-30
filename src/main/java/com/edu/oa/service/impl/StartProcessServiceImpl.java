@@ -5,7 +5,10 @@ import com.edu.oa.mdo.*;
 import com.edu.oa.service.IProcessService;
 import com.edu.oa.service.IStartProcessService;
 import com.edu.oa.util.CommonInfo;
+import com.edu.oa.util.Constant;
 import com.edu.oa.util.SwapAreaUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,6 +16,9 @@ import java.util.List;
 
 @Service
 public class StartProcessServiceImpl implements IStartProcessService {
+
+    private final Logger LOG = LoggerFactory.getLogger(StartProcessServiceImpl.class);
+
     @Resource
     private IProcessService processService;
 
@@ -35,12 +41,29 @@ public class StartProcessServiceImpl implements IStartProcessService {
         String avyId = processInstDo.getAvyId();
         int i = Integer.parseInt(avyId) + 1;
         List<String> nextExecutorList = processService.getNextExecutorList(Integer.toString(i));
+        boolean isMonitor = false;
+        for (String executor : nextExecutorList) {
+            if (leaveInfoDo.getUserId().equals(executor)){
+                LOG.info("当班长申请假期的时候，直接走第三步审核，userId=" + executor);
+                isMonitor = true;
+                break;
+            }
+        }
+        if (isMonitor){
+            processInstDo.setAvyId(Integer.toString(i));
+            nextExecutorList = processService.getNextExecutorList(Integer.toString(i + 1));
+            if (leaveInfoDo.getDays().equals(Constant.NUM_1)){
+                //如果只有一天，并且是班长申请的，则是一步流程，不用审批
+                processService.updateProcessInfo(processInstDo);
+                return;
+            }
+        }
         //6.生成下一步执行人的待办
         processService.makeTodoAvy(nextExecutorList, processInstDo);
         //7.生成当前执行人的历史数据
         processService.makeHistAvy(processInstDo);
         //8.删除当前执行人的待办信息
-        processService.deleteTodoAvyInf(processInstDo);
+       // processService.deleteTodoAvyInf(processInstDo);
         //9.更新流程实例数据
         processService.updateProcessInfo(processInstDo);
     }

@@ -18,4 +18,8 @@
         from class where
         class_no = #{classNo}
     </select>
+    <select id="queryAcademyNameByAcademyNo" resultType="com.edu.oa.mdo.ClazzDo">
+        select academy_name as academyName
+        from class where academy_no = #{academyNo} limit 1;
+    </select>
 </mapper>

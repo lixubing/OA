@@ -5,6 +5,7 @@
 <mapper namespace="User">
     <select id="getUser" resultType="com.edu.oa.mdo.User">
         select username as username,
+            user_id as userId,
             password as password,
             gender as gender,
             age as age,
@@ -54,4 +55,20 @@
             </if>
         </where>
     </select>
+    <update id="updatePersonalInformation" parameterType="com.edu.oa.mdo.User">
+        update user
+            <set>
+                <if test="email != null and email != ''">
+                    email = #{email},
+                </if>
+                <if test="tel != null and tel != ''">
+                    tel = #{tel},
+                </if>
+                <if test="address != null and address != ''">
+                    address = #{address}
+                </if>
+            </set>
+
+        where user_id = #{userId}
+    </update>
 </mapper>

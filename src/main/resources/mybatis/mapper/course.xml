@@ -9,4 +9,11 @@
         teacher_no as teacherNo
         from score where student_no = #{studentNo}
     </select>
+    <select id="queryCourseByTescherNo" resultType="com.edu.oa.mdo.CourseDo">
+        select course_name as courseName,
+        course_no as courseNo,
+        teacher_name as teacherName ,
+        teacher_no as teacherNo
+        from teacher_course where teacher_no = #{teacherNo}
+    </select>
 </mapper>

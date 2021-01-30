@@ -3,6 +3,7 @@ package com.edu.oa;
 import com.edu.oa.mdo.CourseDo;
 import com.edu.oa.mdo.LeaveInfoDo;
 import com.edu.oa.mdo.TemplateInfo;
+import com.edu.oa.mdo.User;
 import com.edu.oa.service.IProcessService;
 import com.edu.oa.util.CommonInfo;
 import com.edu.oa.util.SwapAreaUtils;
@@ -104,8 +105,11 @@ class OaApplicationTests {
 	}
 	@Test
 	public void testLeaveTea1(){
-		System.out.println(processService);
-
+		User u = new User();
+		u.setAcademyNo("001");
+		u.setExecutorId("004");
+		List<User> user = u.getUser();
+		System.out.println(user.get(0).getUserId());
 	}
 
 }

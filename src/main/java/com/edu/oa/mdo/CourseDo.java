@@ -83,4 +83,8 @@ public class CourseDo extends BaseDo{
     public List<CourseDo> getCourseDoByStudentNo(){
         return (List<CourseDo>)getListByParam("course.getCourseAndTeacher",this);
     }
+
+    public List<CourseDo> queryCourseByTescherNo() {
+        return (List<CourseDo>)getListByParam("course.queryCourseByTescherNo",this);
+    }
 }

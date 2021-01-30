@@ -33,6 +33,15 @@ public class UserVo {
     private String className;
     /**学院名称*/
     private String academy;
+    private String courseName;
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
     public String getGender() {
         return gender;

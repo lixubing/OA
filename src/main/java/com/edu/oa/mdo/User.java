@@ -1,8 +1,13 @@
 package com.edu.oa.mdo;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 public class User extends BaseDo{
+    private final Logger LOG = LoggerFactory.getLogger(User.class);
     /**登录用户id，唯一*/
     private String userId;
     private String username;
@@ -169,5 +174,15 @@ public class User extends BaseDo{
         List<Role> roles = role.queryRoleByUserId();
         user.setRoles(roles);
         return user;
+    }
+
+    public int updatePersonalInformation() {
+        if (StringUtils.isBlank(this.getUserId()))
+            throw new RuntimeException("用户id不存在!");
+        if (StringUtils.isBlank(this.getEmail()) && StringUtils.isBlank(this.getTel()) && StringUtils.isBlank(this.getAddress())) {
+            LOG.info("要更新的内容为空");
+            return 0;
+        }
+        return update("User.updatePersonalInformation", this);
     }
 }

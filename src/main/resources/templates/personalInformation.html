@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html  xmlns:th="www.thymeleaf.org">
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
@@ -45,6 +45,8 @@
 			var ff = $("FF");
 			$(function(){
 				$('#ff').form('load','/wfe/getPersonalInformation');
+				var roles = '[[${roles}]]';
+				console.info(roles);
 			});
 
 
@@ -102,43 +104,53 @@
 		<form id="ff" method="post" action="/wfe/updatePersonalInformation">
 			<div>
 				<label for="userId">用户编号:</label>
-				<input id="userId" class="easyui-textbox days" type="text" name="userId" data-options="editable:false" />
+				<input id="userId" class="easyui-textbox" type="text" name="userId" data-options="editable:false" />
 			</div>
 			<div>
 				<label for="username">用户名:</label>
-				<input id="username" class="easyui-textbox days" type="text" name="username" data-options="editable:false" />
+				<input id="username" class="easyui-textbox" type="text" name="username" data-options="editable:false" />
 			</div>
 			<div>
 				<label for="age">年龄:</label>
-				<input id="age" class="easyui-textbox days" type="text" name="age" data-options="editable:false" />
+				<input id="age" class="easyui-textbox" type="text" name="age" data-options="editable:false" />
 			</div>
 			<div>
 				<label for="gender">性别:</label>
-				<input id="gender" class="easyui-textbox days" type="text" name="gender" data-options="editable:false" />
+				<input id="gender" class="easyui-textbox" type="text" name="gender" data-options="editable:false" />
 			</div>
 			<div>
 				<label for="email">邮箱:</label>
-				<input id="email" class="easyui-textbox days" type="text" name="email" data-options="" iconCls="icon-edit"/>
+				<input id="email" class="easyui-textbox" type="text" name="email" data-options="" iconCls="icon-edit"/>
 			</div>
 			<div>
 				<label for="tel">电话:</label>
-				<input id="tel" class="easyui-textbox days" type="text" name="tel" data-options="" iconCls="icon-edit"/>
+				<input id="tel" class="easyui-textbox" type="text" name="tel" data-options="" iconCls="icon-edit"/>
 			</div>
 			<div>
 				<label for="address">地址:</label>
-				<input id="address" class="easyui-textbox days" type="text" name="address" data-options="" iconCls="icon-edit"/>
+				<input id="address" class="easyui-textbox" type="text" name="address" data-options="" iconCls="icon-edit"/>
 			</div>
-			<div>
-				<label for="className">班级:</label>
-				<input id="className" class="easyui-textbox days" type="text" name="className" data-options="editable:false" />
+			<div th:if="${roles.contains('ROLE_STUDENT')}">
+				<div>
+					<label for="className">班级:</label>
+					<input id="className" class="easyui-textbox" type="text" name="className" data-options="editable:false" />
+				</div>
+				<div>
+					<label for="major">专业:</label>
+					<input id="major" class="easyui-textbox" type="text" name="major" data-options="editable:false"/>
+				</div>
 			</div>
-			<div>
-				<label for="major">专业:</label>
-				<input id="major" class="easyui-textbox days" type="text" name="major" data-options="editable:false"/>
+			<div th:if="${roles.contains('ROLE_TEACHER')}">
+				<div>
+					<label for="courseName">课程:</label>
+					<input id="courseName" class="easyui-textbox" type="text" name="courseName" data-options="editable:false"/>
+				</div>
 			</div>
-			<div>
-				<label for="academy">学院:</label>
-				<input id="academy" class="easyui-textbox days" type="text" name="academy" data-options="editable:false" />
+			<div th:if="${roles != 'ROLE_CHAIRMAN'}">
+				<div>
+					<label for="academy">学院:</label>
+					<input id="academy" class="easyui-textbox" type="text" name="academy" data-options="editable:false" />
+				</div>
 			</div>
 			<div style="text-align: left;">
 				<label for="update"></label>

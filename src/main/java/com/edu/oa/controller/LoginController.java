@@ -171,7 +171,8 @@ public class LoginController {
      * @return
      */
     @RequestMapping("personalInformation")
-    public String personalInformation(){
+    public String personalInformation(Model m){
+        getAuthority(m);
         return "personalInformation";
     }
 

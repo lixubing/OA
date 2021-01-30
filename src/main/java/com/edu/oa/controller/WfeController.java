@@ -1,9 +1,7 @@
 package com.edu.oa.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.edu.oa.mdo.ClazzDo;
-import com.edu.oa.mdo.LeaveInfoDo;
-import com.edu.oa.mdo.User;
+import com.edu.oa.mdo.*;
 import com.edu.oa.service.*;
 import com.edu.oa.util.Constant;
 import com.edu.oa.util.JsonResult;
@@ -44,6 +42,8 @@ public class WfeController {
     private IHistService histService;
     @Resource
     private IProcessService processService;
+    @Resource
+    private IUserService userService;
 
     /**
      * 为控制器添加通知，在控制器之前执行
@@ -263,23 +263,22 @@ public class WfeController {
     @RequestMapping("/getPersonalInformation")
     @ResponseBody
     public UserVo getPersonalInformation(Model m){
-        UserVo outVo = new UserVo();
+
         User user = (User) m.getAttribute("user");
-        ClazzDo clazzDo = new ClazzDo();
-        clazzDo.setClassNo(user.getClazzNo());
-        clazzDo = clazzDo.findClazzById();
-        user.setAcademy(clazzDo.getAcademyName());
-        user.setMajor(clazzDo.getMajorName());
-        user.setClassName(clazzDo.getClassName());
-        LOG.info("用户信息界面的用户id = " + user.getUserId());
-        BeanUtils.copyProperties(user, outVo);
+        UserVo outVo = userService.completeUser(user);
         return outVo;
     }
     @RequestMapping("/updatePersonalInformation")
     @ResponseBody
     public JsonResult updatePersonalInformation(UserVo vo){
-        System.out.println(vo.getMajor());
+
         JsonResult js = new JsonResult();
+        try {
+            userService.updatePersonalInformation(vo);
+        }catch (Exception e){
+            js.setMsg(e.getMessage());
+            js.setSuccess(false);
+        }
         return js;
     }
 

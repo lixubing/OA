@@ -134,4 +134,13 @@ public class ClazzDo extends BaseDo {
         ClazzDo clazz = (ClazzDo) getObjectByParam("ClazzDo.findClazzById", this);
         return clazz;
     }
+
+    /**
+     * 根据学院id查询学院名称
+     * @return
+     */
+    public ClazzDo queryAcademyNameByAcademyNo() {
+        ClazzDo clazz = (ClazzDo) getObjectByParam("ClazzDo.queryAcademyNameByAcademyNo", this);
+        return clazz;
+    }
 }
