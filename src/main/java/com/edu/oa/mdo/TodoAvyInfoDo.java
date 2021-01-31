@@ -152,4 +152,12 @@ public class TodoAvyInfoDo extends BaseDo{
     public int updateToWithdrew() {
         return update("TodoAvyInfoDo.updateToWithdrew", this);
     }
+
+    /**
+     * 查询任务数
+     * @return
+     */
+    public Integer queryTodoListNum() {
+        return (Integer)getObjectByParam("TodoAvyInfoDo.queryTodoListNum", this);
+    }
 }

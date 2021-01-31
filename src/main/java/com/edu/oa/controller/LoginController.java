@@ -2,6 +2,9 @@ package com.edu.oa.controller;
 
 import com.edu.oa.mdo.Role;
 import com.edu.oa.mdo.User;
+import com.edu.oa.service.ITodoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -10,12 +13,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
 public class LoginController {
+
+    private final Logger LOG = LoggerFactory.getLogger(LoginController.class);
+
+    @Resource
+    private ITodoService todoService;
 
     @RequestMapping("/login")
     public String login(String name, String password) {
@@ -43,23 +52,18 @@ public class LoginController {
         return "center";
     }
 
-    @RequestMapping("/datagrid")
-    @ResponseBody
-    public String datagrid() {
-        return "[{\n" +
-                "\t\"id\": \"01\",\n" +
-                "\t\"name\": \"张三\",\n" +
-                "\t\"password\": \"123\"\n" +
-                "}, {\n" +
-                "\t\"id\": \"02\",\n" +
-                "\t\"name\": \"李四\",\n" +
-                "\t\"password\": \"123\"\n" +
-                "}]";
-    }
-
     @RequestMapping("/centerIndex")
-    public String centerIndex() {
+    public String centerIndex(Model m) {
         System.out.println("登录2");
+        getAuthority(m);
+        String roles = (String) m.getAttribute("roles");
+        if (!"ROLE_STUDENT".equals(roles)){
+            LOG.info("判断是否查询待办数，roles=" + roles);
+            //获取待办数
+            String num = todoService.getTodoNum((String)m.getAttribute("userId"));
+            m.addAttribute("todoNum", num);
+        }
+
         return "centerIndex";
     }
 
@@ -209,6 +213,7 @@ public class LoginController {
         mv.addAttribute("name", user.getUsername());
         mv.addAttribute("roleName", sb.toString());
         mv.addAttribute("roles", sbs.toString());
+        mv.addAttribute("userId", userId);
         System.out.println("name=" + user.getUsername());
         System.out.println("roleName=" + sb.toString());
         return mv;

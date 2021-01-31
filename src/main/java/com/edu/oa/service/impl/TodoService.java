@@ -83,6 +83,16 @@ public class TodoService implements ITodoService {
         return vos;
     }
 
+    @Override
+    public String getTodoNum(String userId) {
+        //从loginController过来时没有往内存中缓存用户信息，需要传递过来
+        TodoAvyInfoDo todoAvyInfoDo = new TodoAvyInfoDo();
+        todoAvyInfoDo.setExecutorId(userId);
+        todoAvyInfoDo.setCanRetreat("1");
+        String num = todoAvyInfoDo.queryTodoListNum().toString();
+        return num;
+    }
+
 
     /**
      * 获取待办列表

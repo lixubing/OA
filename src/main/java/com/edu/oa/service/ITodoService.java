@@ -16,4 +16,6 @@ public interface ITodoService {
     List<RefuseLeaveVo> getCanWithdrawLeaveList();
 
     List<RefuseLeaveVo> getWithdrewLeaveList();
+
+    String getTodoNum(String userId);
 }

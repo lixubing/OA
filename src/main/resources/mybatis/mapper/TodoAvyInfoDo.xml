@@ -63,4 +63,7 @@
         update todo_avy_info set can_withdraw = "0",withdrew = "1"
         where process_inst_id = #{processInstId} and executor_id = #{executorId}
     </update>
+    <select id="queryTodoListNum" resultType="java.lang.Integer">
+        select count(1) from todo_avy_info where executor_id = #{executorId} and can_retreat = #{canRetreat}
+    </select>
 </mapper>

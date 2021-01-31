@@ -5,6 +5,19 @@
     <title>Title</title>
 </head>
 <body>
+<script>
+    function leaveTodo(){
+        $('#center').panel('refresh','leaveTodo');
+    }
+</script>
     <h1>欢迎！这里是首页</h1>
+    <div th:if="${roles != 'ROLE_STUDENT'}">
+    <div style="height:300px;">
+        <div style="display:inline-block;width:40%;height:280px;position:relative;top:5px">
+            <p><font size="5">您现在有</font><font color="red" size="6"><a href="#" onclick="leaveTodo()" th:text="${todoNum}">2</a></font><font size="5">条待办待处理</font></p>
+        </div>
+          <div id="cc" class="easyui-calendar" style="width:280px;height:280px;display:inline-block">a</div>
+    </div>
+    </div>
 </body>
 </html>
