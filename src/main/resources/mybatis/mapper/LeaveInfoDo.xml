@@ -93,12 +93,16 @@
         b.start_date as startDate,
         b.end_date as endDate,
         b.days,
+        b.course_name as courseName,
+        b.description,
+        p.executor_id as lastExecutor,
+        p.decision_desc as decisionDesc,
         p.process_tpcd as processTpcd
         from biz_info b,process_info p
         where b.process_inst_id = p.process_inst_id
         and p.process_tpcd = #{processTpcd}
-        and b.owner = #{userId}
-        and b.start_date > #{startDate}
+        and b.owner_id = #{userId}
+        and b.start_date &gt;= #{startDate}
     </select>
     <select id="queryCourseByProcessInstId" resultType="com.edu.oa.mdo.LeaveInfoDo">
         select course_name as courseName,

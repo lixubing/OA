@@ -105,11 +105,12 @@ class OaApplicationTests {
 	}
 	@Test
 	public void testLeaveTea1(){
-		User u = new User();
-		u.setAcademyNo("001");
-		u.setExecutorId("004");
-		List<User> user = u.getUser();
-		System.out.println(user.get(0).getUserId());
+		LeaveInfoDo l = new LeaveInfoDo();
+		l.setProcessTpcd("14");
+		l.setStartDate("20210223");
+		l.setUserId("202000100101");
+		List<LeaveInfoDo> leaveInfoDos = l.queryRefuseList();
+		System.out.println(leaveInfoDos.size());
 	}
 
 }

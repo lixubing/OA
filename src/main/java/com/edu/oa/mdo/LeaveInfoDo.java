@@ -24,6 +24,8 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
     private String days;
     private String description;
     private String functionId;
+
+    private String lastExecutor;
     /**
      * 课程
      */
@@ -65,6 +67,14 @@ public class LeaveInfoDo extends BaseDo implements Serializable {
      */
     private List<String> leaveStatus;
     private String today;
+
+    public String getLastExecutor() {
+        return lastExecutor;
+    }
+
+    public void setLastExecutor(String lastExecutor) {
+        this.lastExecutor = lastExecutor;
+    }
 
     public String getStartDateBegin() {
         return startDateBegin;

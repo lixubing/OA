@@ -57,14 +57,13 @@ CREATE TABLE `biz_info` (
 
 /*Data for the table `biz_info` */
 
-insert  into `biz_info`(`process_inst_id`,`owner`,`owner_id`,`tpl_no`,`class_no`,`tms`,`function_id`,`apply_date`,`start_date`,`end_date`,`days`,`description`,`course_name`,`teacher_name`,`ids`) values ('2021010323250078500032','张三','202000100101','100',NULL,NULL,NULL,NULL,'2021-01-01','2021-01-01',1,'1',NULL,NULL,'001002|'),('2021010323260485400033','张三','202000100101','101',NULL,NULL,NULL,NULL,'2021-01-01','2021-01-02',2,'2',NULL,NULL,'001002|'),('2021010323351849200034','张三','202000100101','101',NULL,NULL,NULL,NULL,'2021-01-01','2021-01-02',2,'2',NULL,NULL,'001001|'),('2021010822465090700035','张三','202000100101','100',NULL,NULL,NULL,NULL,'2021-01-01','2021-01-01',1,'1天',NULL,NULL,'001001|001002|'),('2021010822564186300036','张三','202000100101','100',NULL,NULL,NULL,NULL,'2021-01-01','2021-01-01',1,'请假',NULL,NULL,'001001|001002|'),('2021010823375915700038','张三','202000100101','100',NULL,NULL,NULL,NULL,'2021-01-01','2021-01-01',1,'有事',NULL,NULL,'001001|001002|'),('2021010823474071000039','张三','202000100101','100',NULL,'2021-01-12 22:04:11',NULL,NULL,'2021-01-01','2021-01-01',1,'去去去','语文','朱自清','2000001001|2000001002|'),('2021011016050769900040','张三','202000100101','100',NULL,'2021-01-12 22:08:58',NULL,NULL,'2021-01-01','2021-01-01',1,'new','高数,语文,','高斯,朱自清,','2000001001|2000001002|'),('2021011023470950700043','张三','202000100101','100',NULL,'2021-01-12 21:34:22',NULL,NULL,'2021-01-01','2021-01-01',1,'去去去123','高数,语文,','高斯,朱自清,','2000001001|2000001002|'),('2021011023520720100044','张三','202000100101','100',NULL,NULL,NULL,NULL,'2021-01-01','2021-01-01',1,'去去去','高数,语文,','高斯,朱自清,','2000001001|2000001002|'),('2021011023533371000045','张三','202000100101','100',NULL,NULL,NULL,NULL,'2021-01-01','2021-01-01',1,'去去去','高数,语文,','高斯,朱自清,','2000001001|2000001002|'),('2021011100010019600048','张三','202000100101','100',NULL,'2021-01-12 22:19:23',NULL,NULL,'2021-01-01','2021-01-01',1,'new','高数,语文,','高斯,朱自清,','2000001001|2000001002|'),('2021011100023207200049','张三','202000100101','100',NULL,'2021-01-12 21:48:32',NULL,NULL,'2021-01-01','2021-01-01',1,'去去去123','高数,语文,','高斯,朱自清,','2000001001|2000001002|');
-
 /*Table structure for table `class` */
 
 DROP TABLE IF EXISTS `class`;
 
 CREATE TABLE `class` (
   `class_no` varchar(16) NOT NULL COMMENT '班级ID',
+  `class_name` varchar(16) DEFAULT NULL COMMENT '班级名称',
   `major_no` varchar(16) NOT NULL COMMENT '专业ID',
   `major_name` varchar(16) NOT NULL COMMENT '专业名称',
   `academy_no` varchar(16) NOT NULL COMMENT '学院ID',
@@ -77,7 +76,7 @@ CREATE TABLE `class` (
 
 /*Data for the table `class` */
 
-insert  into `class`(`class_no`,`major_no`,`major_name`,`academy_no`,`academy_name`,`counselor_no`,`counselor_name`,`monitor_no`,`monitor_name`) values ('2020001001','001','信息技术','001','工程学院','2016001901','马化腾','202000100102','李四');
+insert  into `class`(`class_no`,`class_name`,`major_no`,`major_name`,`academy_no`,`academy_name`,`counselor_no`,`counselor_name`,`monitor_no`,`monitor_name`) values ('2020001001','信息技术2001','001','信息技术','001','工程学院','2016001901','马化腾','202000100102','李四');
 
 /*Table structure for table `hist_avy` */
 
@@ -96,8 +95,6 @@ CREATE TABLE `hist_avy` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `hist_avy` */
-
-insert  into `hist_avy`(`process_inst_id`,`avy_id`,`tpl_no`,`executor_id`,`class_no`,`tms`,`function_id`,`decision`,`decision_desc`) values ('2021010823474071000039','1','100','202000100101','2020001001','2021-01-12 22:04:11','COMM_001',NULL,NULL),('2021011016050769900040','1','100','202000100101','2020001001','2021-01-12 22:08:58','COMM_001',NULL,NULL),('2021011100010019600048','1','100','202000100101','2020001001','2021-01-12 22:19:23','COMM_001',NULL,NULL);
 
 /*Table structure for table `process_info` */
 
@@ -119,7 +116,19 @@ CREATE TABLE `process_info` (
 
 /*Data for the table `process_info` */
 
-insert  into `process_info`(`process_inst_id`,`avy_id`,`tpl_no`,`executor_id`,`process_tpcd`,`class_no`,`tms`,`function_id`,`decision`,`decision_desc`,`owner_id`) values ('2021010823474071000039','1','100','001','10','2020001001','2021-01-12 22:04:11','COMM_001',NULL,NULL,'202000100101'),('2021011016050769900040','1','100','001','10','2020001001','2021-01-12 22:08:58','COMM_001',NULL,NULL,'202000100101'),('2021011023470950700043','1','100','001','11','2020001001','2021-01-11 00:02:16','COMM_001',NULL,NULL,'202000100101'),('2021011023520720100044','1','100','001','11','2020001001','2021-01-11 00:02:16','COMM_001',NULL,NULL,'202000100101'),('2021011023533371000045','1','100','001','11','2020001001','2021-01-11 00:02:17','COMM_001',NULL,NULL,'202000100101'),('2021011100010019600048','1','100','001','10','2020001001','2021-01-12 22:19:23','COMM_001',NULL,NULL,'202000100101'),('2021011100023207200049','1','100','001','11','2020001001','2021-01-12 21:17:52','COMM_001',NULL,NULL,'202000100101');
+/*Table structure for table `role` */
+
+DROP TABLE IF EXISTS `role`;
+
+CREATE TABLE `role` (
+  `id` varchar(16) NOT NULL,
+  `authority` varchar(16) NOT NULL,
+  `role_name` varchar(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `role` */
+
+insert  into `role`(`id`,`authority`,`role_name`) values ('001','ROLE_STUDENT','学生'),('002','ROLE_MONITOR','班长'),('003','ROLE_COUNSELOR','辅导员'),('004','ROLE_DEAN','院长'),('005','ROLE_CHAIRMAN','主任'),('100','ROLE_TEACHER','老师');
 
 /*Table structure for table `score` */
 
@@ -154,7 +163,7 @@ CREATE TABLE `sequence` (
 
 /*Data for the table `sequence` */
 
-insert  into `sequence`(`sequence_id`,`num`,`step`,`min`,`max`) values ('process_inst_id',50,1,1,99999);
+insert  into `sequence`(`sequence_id`,`num`,`step`,`min`,`max`) values ('process_inst_id',78,1,1,99999);
 
 /*Table structure for table `teacher_course` */
 
@@ -185,8 +194,6 @@ CREATE TABLE `teacher_leave` (
 
 /*Data for the table `teacher_leave` */
 
-insert  into `teacher_leave`(`teacher_no`,`process_inst_id`,`teacher_name`,`course_no`,`course_name`) values ('2000001001','2021010823474071000039','高斯','001','高数'),('2000001002','2021010823474071000039','朱自清','002','语文'),('2000001001','2021011016050769900040','高斯','001','高数'),('2000001002','2021011016050769900040','朱自清','002','语文'),('2000001001','2021011023470950700043','高斯','001','高数'),('2000001002','2021011023470950700043','朱自清','002','语文'),('2000001001','2021011023520720100044','高斯','001','高数'),('2000001002','2021011023520720100044','朱自清','002','语文'),('2000001001','2021011023533371000045','高斯','001','高数'),('2000001002','2021011023533371000045','朱自清','002','语文'),('2000001001','2021011100010019600048','高斯','001','高数'),('2000001002','2021011100010019600048','朱自清','002','语文'),('2000001001','2021011100023207200049','高斯','001','高数'),('2000001002','2021011100023207200049','朱自清','002','语文');
-
 /*Table structure for table `todo_avy_info` */
 
 DROP TABLE IF EXISTS `todo_avy_info`;
@@ -205,8 +212,6 @@ CREATE TABLE `todo_avy_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `todo_avy_info` */
-
-insert  into `todo_avy_info`(`process_inst_id`,`avy_id`,`tpl_no`,`executor_id`,`class_no`,`tms`,`function_id`,`can_withdraw`,`can_retreat`,`withdrew`) values ('2021011023470950700043','2','100','202000100101','2020001001','2021-01-10 23:47:09','COMM_001','0','0','1'),('2021011023520720100044','2','100','202000100101','2020001001','2021-01-10 23:52:07','COMM_001','0','0','1'),('2021011023533371000045','2','100','202000100101','2020001001','2021-01-10 23:53:33','COMM_001','0','0','1'),('2021011100023207200049','2','100','202000100101','2020001001','2021-01-11 00:02:32','COMM_001','0','0','1'),('2021011100010019600048','2','100','202000100102','2020001001','2021-01-12 22:19:23','COMM_001','0','1',NULL),('2021011100010019600048','2','100','202000100101','2020001001','2021-01-12 22:19:23','COMM_001','1','0',NULL);
 
 /*Table structure for table `tpl_avy_info` */
 
@@ -249,6 +254,7 @@ CREATE TABLE `user` (
   `user_id` varchar(32) NOT NULL COMMENT '用户id',
   `username` varchar(32) NOT NULL COMMENT '用户姓名',
   `password` varchar(128) DEFAULT NULL COMMENT '密码',
+  `gender` char(1) DEFAULT NULL,
   `age` varchar(3) DEFAULT NULL COMMENT '年龄',
   `tel` varchar(16) DEFAULT NULL COMMENT '电话',
   `email` varchar(32) DEFAULT NULL COMMENT '邮箱',
@@ -262,7 +268,20 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user`(`user_id`,`username`,`password`,`age`,`tel`,`email`,`address`,`class_no`,`major_no`,`academy_no`,`executor_id`) values ('1985009001','张主任','123','48',NULL,NULL,NULL,NULL,NULL,NULL,'005'),('1985009002','王院长','123','35',NULL,NULL,NULL,NULL,NULL,'001','004'),('2000001001','高斯','123','45',NULL,NULL,NULL,NULL,NULL,NULL,'100'),('2000001002','朱自清','123',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'100'),('2015009003','唐三藏','123','28',NULL,NULL,NULL,NULL,NULL,NULL,'003'),('202000100101','张三','123','18','18808880888','168@qq.com','北京市','2020001001','001001','001','001'),('202000100102','李四','123','18','18800010001','169@qq.com','保定市','2020001001','001001','001','002');
+insert  into `user`(`user_id`,`username`,`password`,`gender`,`age`,`tel`,`email`,`address`,`class_no`,`major_no`,`academy_no`,`executor_id`) values ('1985009001','张主任','123','男','48','188','zhuren@qq.com','阿拉维加斯',NULL,NULL,NULL,'005'),('1985009002','王院长','123','男','35','110','yuanzhang@qq.com','爱德华州',NULL,NULL,'001','004'),('2000001001','高斯','123','男','45',NULL,NULL,NULL,NULL,NULL,'001','100'),('2000001002','朱自清','123','男','28',NULL,NULL,NULL,NULL,NULL,'001','100'),('2015009003','唐三藏','123','男','28',NULL,NULL,NULL,NULL,NULL,NULL,'003'),('2016001901','马化腾','123','男','48','188000','888@qq.com','深圳市',NULL,'001','001','003'),('202000100101','张三','123','男','18','18808880888999','168168@qq.com','北京市天桥','2020001001','001001','001','001'),('202000100102','李四','123','男','18','18800010001','169@qq.com','保定市','2020001001','001001','001','002');
+
+/*Table structure for table `user_role` */
+
+DROP TABLE IF EXISTS `user_role`;
+
+CREATE TABLE `user_role` (
+  `user_id` varchar(16) NOT NULL,
+  `role_id` varchar(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `user_role` */
+
+insert  into `user_role`(`user_id`,`role_id`) values ('202000100101','001'),('202000100102','002'),('202000100102','001'),('2000001001','100'),('2000001002','100'),('2015009003','003'),('1985009001','005'),('1985009002','004'),('2016001901','003');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

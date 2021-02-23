@@ -120,10 +120,12 @@ public class HistServiceImpl implements IHistService {
         leaveInfoDo.setUserId(userId);
         leaveInfoDo.setProcessTpcd(Constant.processTPCD_14);
         //暂定只能查询请假日期开始之前的
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String now = format.format(new Date());
         leaveInfoDo.setStartDate(now);
+        LOG.info("查询条件=" + leaveInfoDo);
         List<LeaveInfoDo> leaveInfoDos = leaveInfoDo.queryRefuseList();
+        LOG.info("已拒绝的流程数=" + leaveInfoDos.size());
         List<RefuseLeaveVo> result = new ArrayList<>();
         for (LeaveInfoDo infoDo : leaveInfoDos) {
             RefuseLeaveVo refuseLeaveVo= new RefuseLeaveVo();
